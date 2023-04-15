@@ -14,14 +14,12 @@
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/freshfoodapp/API/APIService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/freshfoodapp/API/RetrofitClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/freshfoodapp/Models/Account.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/freshfoodapp/Models/Category.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/freshfoodapp/Models/Login.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/freshfoodapp/Models/ResponseObject.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/freshfoodapp/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/freshfoodapp/LoginActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -95,7 +93,7 @@
     "RunOnceActivity.cidr.known.project.marker": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "F:/HCMUTE/HK2_2022_2023/LapTrinhDiDong/ProjectCuoiKi/FreshFoodApp/FreshFoodApp/app/src/main/res/xml"
+    "last_opened_file_path": "F:/HCMUTE/HK2_2022_2023/LapTrinhDiDong/ProjectCuoiKi/FreshFoodApp/FreshFoodApp"
   }
 }]]></component>
   <component name="RecentsManager">
