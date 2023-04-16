@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv1_login_df" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/et_login_username"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv2_login_df" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/et_login_password"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -78,10 +78,10 @@
         android:textColor="#404040"
         android:textColorHint="#A1A1A1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/et_login_username" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/loginBtn"
+        android:id="@+id/btn_login_signin"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="60dp"
@@ -91,7 +91,7 @@
         android:elevation="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password">
+        app:layout_constraintTop_toBottomOf="@+id/et_login_password">
 
         <TextView
             android:id="@+id/textView2"
@@ -108,7 +108,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/loginGoogleBtn"
+        android:id="@+id/btn_login_google"
         android:layout_width="0dp"
         android:layout_height="50sp"
         android:layout_marginStart="60dp"
@@ -120,7 +120,7 @@
         android:elevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginBtn">
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_signin">
 
         <ImageView
             android:id="@+id/imageView"
@@ -161,10 +161,10 @@
         android:text="Forget Password?"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginGoogleBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_google" />
 
     <TextView
-        android:id="@+id/signUpBtn"
+        android:id="@+id/btn_login_signup"
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
