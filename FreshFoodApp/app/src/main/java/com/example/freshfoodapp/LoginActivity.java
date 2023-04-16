@@ -5,16 +5,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
+
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.freshfoodapp.API.APIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Models.Category;
-import com.example.freshfoodapp.Models.Login;
 import com.example.freshfoodapp.Models.ResponseObject;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -41,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     APIService apiService;
 
     ResponseObject responseObject;
+
+    TextView signUpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,5 +116,12 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), "Login success!", Toast.LENGTH_SHORT).show();
+        signUpBtn = findViewById(R.id.btn_login_signup);
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            }
+        });
     }
 }
