@@ -82,11 +82,17 @@ public class LoginActivity extends AppCompatActivity {
                 Login(String.valueOf(username.getText()),String.valueOf(password.getText()));
             }
         });
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            }
+        });
     }
 
     void Mapping(){
         btnConfirm = findViewById(R.id.btn_login_signin);
-
+        signUpBtn = findViewById(R.id.btn_login_signup);
         //Login with google
         btn_loginGoogle = findViewById(R.id.btn_login_google);
         username = findViewById(R.id.et_login_username);
