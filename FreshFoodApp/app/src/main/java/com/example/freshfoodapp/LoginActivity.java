@@ -3,9 +3,14 @@ package com.example.freshfoodapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
+import android.view.KeyboardShortcutGroup;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import android.util.Log;
@@ -36,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
-    ConstraintLayout btn_loginGoogle, btnConfirm;
+    ConstraintLayout btn_loginGoogle, btnConfirm, layoutLogin, btn;
 
     EditText username;
     EditText password;
@@ -56,18 +61,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Mapping();
 
-        apiService = RetrofitClient.getRetrofit().create(APIService.class);
-        apiService.getAll().enqueue(new Callback<List<Category>>() {
-            @Override
-            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-            }
-
-            @Override
-            public void onFailure(Call<List<Category>> call, Throwable t) {
-
-            }
-        });
-
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         btn_loginGoogle.setOnClickListener(new View.OnClickListener() {
@@ -79,15 +72,46 @@ public class LoginActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clickNoneEditText(view);
                 Login(String.valueOf(username.getText()),String.valueOf(password.getText()));
             }
         });
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clickNoneEditText(view);
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
             }
         });
+
+        layoutLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickNoneEditText(view);
+            }
+        });
+    }
+
+    //khi an vao khong phải edittext
+    void clickNoneEditText(View view){
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(LoginActivity.this);
+                    return false;
+                }
+            });
+        }
+    }
+
+    //an ban phim
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     void Mapping(){
@@ -97,6 +121,8 @@ public class LoginActivity extends AppCompatActivity {
         btn_loginGoogle = findViewById(R.id.btn_login_google);
         username = findViewById(R.id.et_login_username);
         password = findViewById(R.id.et_login_password);
+
+        layoutLogin = findViewById(R.id.layout_login);
     }
     void SignIn(){
         Intent signinInIntent = googleSignInClient.getSignInIntent();
@@ -108,12 +134,18 @@ public class LoginActivity extends AppCompatActivity {
         apiService.login(username,password).enqueue(new Callback<ResponseObject>() {
             @Override
             public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
-                object = response.body();
-                Gson gson = new Gson();
-                account = gson.fromJson(object.getData(),Account.class);
+                if(response.isSuccessful()) {
+                    object = response.body();
+                    Gson gson = new Gson();
+                    account = gson.fromJson(object.getData(), Account.class);
 
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -140,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
     void navigateToSecondActivity(){
         finish();
         //chuyen man hinh sang main
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), "Login success!", Toast.LENGTH_SHORT).show();
         signUpBtn = findViewById(R.id.btn_login_signup);
