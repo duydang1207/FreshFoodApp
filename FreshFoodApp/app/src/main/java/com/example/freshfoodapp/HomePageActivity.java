@@ -1,7 +1,13 @@
 package com.example.freshfoodapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.freshfoodapp.Adapter.CategoryAdapter;
+import com.example.freshfoodapp.Adapter.ProductAdapter;
+import com.example.freshfoodapp.Domain.CategoryDomain;
+import com.example.freshfoodapp.Domain.ProductDomain;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.Shapeable;
@@ -18,6 +24,8 @@ import java.util.ArrayList;
 public class HomePageActivity extends AppCompatActivity {
 
     private ViewFlipper viewFlipper;
+    private RecyclerView rvCateList, rvProTrend;
+    private RecyclerView.Adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +34,8 @@ public class HomePageActivity extends AppCompatActivity {
         viewFlipper = findViewById(R.id.vf_homepage_imgFlipper);
 
         viewFiliper();
+        recycleViewCategory();
+        recycleViewTrending();
     }
 
     public void viewFiliper(){
@@ -71,5 +81,36 @@ public class HomePageActivity extends AppCompatActivity {
         viewFlipper.setInAnimation(slidein);
 
         viewFlipper.setOutAnimation(slideout);
+    }
+    public void recycleViewCategory(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvCateList = findViewById(R.id.rv_homepage_cate);
+        rvCateList.setLayoutManager(linearLayoutManager);
+
+        ArrayList<CategoryDomain> cates = new ArrayList<>();
+        cates.add(new CategoryDomain("Thịt","meat"));
+        cates.add(new CategoryDomain("Cá","fish"));
+        cates.add(new CategoryDomain("Trứng","eggs"));
+        cates.add(new CategoryDomain("Rau củ quả","vegetables"));
+        cates.add(new CategoryDomain("Hải sản","seafood"));
+
+        adapter = new CategoryAdapter(cates);
+        rvCateList.setAdapter(adapter);
+    }
+
+    public void recycleViewTrending(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvProTrend = findViewById(R.id.rv_homepage_protrend);
+        rvProTrend.setLayoutManager(linearLayoutManager);
+
+        ArrayList<ProductDomain> proTrends = new ArrayList<>();
+        proTrends.add(new ProductDomain("Nạc Dăm Heo","meat_pig",47500.0,1));
+        proTrends.add(new ProductDomain("Bắp bò Mỹ","meat_beef", 120000.0,2));
+        proTrends.add(new ProductDomain("Cá ngừ bò nguyên con","fish_ngu", 130000.0,3));
+        proTrends.add(new ProductDomain("Tôm càng xanh","tom", 95000.0,4));
+        proTrends.add(new ProductDomain("Bắp bò Mỹ","meat_beef", 120000.0,5));
+
+        adapter = new ProductAdapter(proTrends);
+        rvProTrend.setAdapter(adapter);
     }
 }
