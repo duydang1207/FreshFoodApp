@@ -21,4 +21,9 @@ public interface APIService {
 
     @GET("category/parent")
     Call<List<Category>> getAll();
+
+    @FormUrlEncoded
+    @POST("user/new")
+    Call<ResponseObject> signup(@Field("username") String username, @Field("password") String password,
+                                @Field("name") String name, @Field("email") String email);
 }
