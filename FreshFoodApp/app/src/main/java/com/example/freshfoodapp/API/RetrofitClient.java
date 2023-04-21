@@ -14,7 +14,7 @@ public class RetrofitClient {
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl("https://fresh-food-api.herokuapp.com/api/fresh_shop/")
+                    .baseUrl("http://10.0.2.2:8081/api/fresh_shop/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
