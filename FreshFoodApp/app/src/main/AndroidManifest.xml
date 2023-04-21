@@ -20,13 +20,17 @@
             android:name=".ProductDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".BottomNavigationActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".FreshFoodBottomNavigationActivity"
+            android:exported="true"/>
+        <activity
             android:name=".UploadAvatarActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomePageActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -37,6 +41,9 @@
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomePageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
