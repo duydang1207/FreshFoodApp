@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.freshfoodapp.R;
 
-public class FreshNoticeFragment extends Fragment {
+public class FreshSettingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_fresh_notification, null);
-        getActivity().setTitle("Notification");
+        View v = inflater.inflate(R.layout.fragment_fresh_setting, null);
+        getActivity().setTitle("Setting");
         return v;
     }
 }
