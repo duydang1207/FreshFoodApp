@@ -17,13 +17,15 @@
         android:theme="@style/Theme.FreshFoodApp"
         tools:targetApi="31">
         <activity
+            android:name=".ProductDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".BottomNavigationActivity"
-            android:exported="true" >
+            android:exported="false" />
 
-        </activity>
         <activity
             android:name=".FreshFoodBottomNavigationActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
         <activity
             android:name=".UploadAvatarActivity"
             android:exported="false" />
@@ -36,9 +38,10 @@
         <activity
             android:name=".SignUpActivity"
             android:exported="true" />
+        <activity android:name=".ProfileActivity" />
         <activity
-            android:name=".ProfileActivity"
-            android:exported="true" />
+            android:name=".CartActivity"
+            android:exported="false" />
         <activity
             android:name=".HomePageActivity"
             android:exported="true">
