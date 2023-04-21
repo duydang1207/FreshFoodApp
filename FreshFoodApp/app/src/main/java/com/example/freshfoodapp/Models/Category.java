@@ -3,19 +3,23 @@ package com.example.freshfoodapp.Models;
 import java.io.Serializable;
 
 public class Category implements Serializable {
-    int id;
+    Long id;
     String name;
+    int parent;
+    int children;
 
-    public Category(int id, String name) {
+    public Category(Long id, String name, int parent, int children) {
         this.id = id;
         this.name = name;
+        this.parent = parent;
+        this.children = children;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -25,5 +29,21 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getParent() {
+        return parent;
+    }
+
+    public void setParent(int parent) {
+        this.parent = parent;
+    }
+
+    public int getChildren() {
+        return children;
+    }
+
+    public void setChildren(int children) {
+        this.children = children;
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,10 +57,10 @@ public class CartAdapter extends BaseAdapter {
         TextView textPrice = (TextView) view.findViewById(R.id.tv_cart_price);
         ImageView image = (ImageView) view.findViewById(R.id.iv_cart_imageproduct);
         TextView textPricePromotion = (TextView) view.findViewById(R.id.tv_cart_pricepromotion);
-        TextView textQuantity = (TextView) view.findViewById(R.id.tv_cart_quantitybuy);
-        TextView btnPlus = (TextView) view.findViewById(R.id.btn_cart_plus);
-        TextView btnMinus = (TextView) view.findViewById(R.id.btn_cart_minus);
-        TextView tvSale = (TextView) view.findViewById(R.id.iv_cart_sale);
+        TextView textQuantity = (TextView) view.findViewById(R.id.tv_cartItem_quantity);
+        Button btnPlus = (Button) view.findViewById(R.id.btn_cartItem_plus);
+        Button btnMinus = (Button) view.findViewById(R.id.btn_cartItem_minus);
+//        TextView tvSale = (TextView) view.findViewById(R.id.iv_cart_sale);
 
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,14 +87,14 @@ public class CartAdapter extends BaseAdapter {
         Cart cart = carts.get(i);
         textName.setText(cart.getName());
         if(cart.getPromotion() == 0){
-            textPrice.setText(String.valueOf(cart.getPrice().toString())+" VNĐ");
+            textPrice.setText(String.valueOf(cart.getPrice().toString())+"đ");
             textPricePromotion.setText(String.valueOf(""));
-            tvSale.setBackground(null);
+//            tvSale.setBackground(null);
         }
         else {
             textPricePromotion.setText(String.valueOf(cart.getPrice()));
             BigDecimal price = cart.getPrice().subtract(cart.getPrice().multiply(BigDecimal.valueOf(cart.getPromotion()).divide(BigDecimal.valueOf(100))));
-            textPrice.setText(String.valueOf(price)+" VNĐ");
+            textPrice.setText(String.valueOf(price)+" đ");
             textPricePromotion.setPaintFlags(textPricePromotion.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         }
