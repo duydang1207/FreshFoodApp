@@ -7,14 +7,18 @@
         android:icon="@drawable/home" />
 
     <item android:id="@+id/freshProduct"
-        android:title="Sản phẩm"
-        android:icon="@drawable/vegetable" />
+        android:title="Yêu thích"
+        android:icon="@drawable/heart" />
 
     <item android:id="@+id/freshCart"
         android:title="Giỏ hàng"
-        android:icon="@drawable/shopping_cart" />
+        android:icon="@drawable/cart" />
 
     <item android:id="@+id/freshUser"
         android:title="Người dùng"
         android:icon="@drawable/user" />
+
+    <item android:id="@+id/freshSetting"
+        android:title="Cài đặt"
+        android:icon="@drawable/setting" />
 </menu>

@@ -88,7 +88,6 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#7BD09B"
         android:elevation="3dp"
-        android:src="@drawable/shopping_cart"
         app:layout_anchor="@id/bottom_appbar"
         app:maxImageSize="30dp"
         app:tint="#ffffff">

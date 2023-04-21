@@ -41,18 +41,18 @@ public class LoginActivity extends AppCompatActivity {
 
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
-    ConstraintLayout btn_loginGoogle, btnConfirm, layoutLogin, btn;
+    ConstraintLayout btn_loginGoogle, btnConfirm, layoutLogin;
+    EditText username, password;
 
-    EditText username;
-    EditText password;
-
-    APIService apiService;
+    APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);;
 
     ResponseObject<Account> object;
 
     Account account;
 
     TextView signUpBtn;
+
+    String googleEmail, googleName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +66,61 @@ public class LoginActivity extends AppCompatActivity {
         btn_loginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SignIn();
+                SignInWithGoogle();
+                getAccountGoogle();//lấy name, email
+                if (googleName != null && googleEmail != null) {
+                    apiService.login(googleEmail, "").enqueue(new Callback<ResponseObject>() {
+                        @Override
+                        public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                            if (response.isSuccessful()) {//login khi da co tai khoan
+                                object = response.body();
+                                Gson gson = new Gson();
+                                account = gson.fromJson(object.getData(), Account.class);
+
+                                Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            } else if (!response.isSuccessful()) {//chua co tai khoan
+                                apiService.signup(googleEmail, "", googleName, googleEmail).enqueue(new Callback<ResponseObject>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                                        if (response.isSuccessful()) {
+                                            Login(googleEmail, "");
+                                            Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<ResponseObject> call, Throwable t) {
+                                        Log.e("Error", t.getMessage());
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ResponseObject> call, Throwable t) {
+                            Log.e("Error", t.getMessage());
+                        }
+                    });
+                }
             }
         });
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickNoneEditText(view);
-                Login(String.valueOf(username.getText()),String.valueOf(password.getText()));
+                if(username.length()==0){
+                    Toast.makeText(getApplicationContext(), "Vui lòng nhập username!", Toast.LENGTH_SHORT).show();
+                }
+                else if(password.length()==0){
+                    Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Login(String.valueOf(username.getText()), String.valueOf(password.getText()));
+                }
             }
         });
         signUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //khi an vao khong phải edittext
-    void clickNoneEditText(View view){
+    void clickNoneEditText(View view) {
         // Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
             view.setOnTouchListener(new View.OnTouchListener() {
@@ -114,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                 activity.getCurrentFocus().getWindowToken(), 0);
     }
 
-    void Mapping(){
+    void Mapping() {
         btnConfirm = findViewById(R.id.btn_login_signin);
         signUpBtn = findViewById(R.id.btn_login_signup);
         //Login with google
@@ -124,63 +171,56 @@ public class LoginActivity extends AppCompatActivity {
 
         layoutLogin = findViewById(R.id.layout_login);
     }
-    void SignIn(){
+
+    void SignInWithGoogle() {
         Intent signinInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signinInIntent,1000);
+        startActivityForResult(signinInIntent, 1000);
     }
 
-    void Login(String username, String password){
-        apiService = RetrofitClient.getRetrofit().create(APIService.class);
-        apiService.login(username,password).enqueue(new Callback<ResponseObject>() {
+    void Login(String username, String password) {
+        apiService.login(username, password).enqueue(new Callback<ResponseObject>() {
             @Override
             public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     object = response.body();
                     Gson gson = new Gson();
                     account = gson.fromJson(object.getData(), Account.class);
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseObject> call, Throwable t) {
-                Log.e("Error",t.getMessage());
+                Log.e("Error", t.getMessage());
             }
         });
 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000) {
+        if (requestCode == 1000) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 task.getResult(ApiException.class);
-                navigateToSecondActivity();
             } catch (ApiException e) {
                 Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+
             }
         }
     }
-    void navigateToSecondActivity(){
-        finish();
-        //chuyen man hinh sang main
-        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-        startActivity(intent);
-        Toast.makeText(getApplicationContext(), "Login success!", Toast.LENGTH_SHORT).show();
-        signUpBtn = findViewById(R.id.btn_login_signup);
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-            }
-        });
+
+    void getAccountGoogle() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null) {
+            googleName = account.getDisplayName();
+            googleEmail = account.getEmail();
+        }
     }
 }

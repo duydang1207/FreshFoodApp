@@ -5,20 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BottomNavigationActivity">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/freshfood_bottom_navigation"
-            android:layout_alignParentBottom="true"
-            android:backgroundTint="#ffffff"
-            app:itemTextColor="@color/black"
-            app:itemIconTint="@color/black"
-            app:menu="@menu/bottom_menu" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/freshfood_bottom_navigation"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="#ffffff"
+        app:itemTextColor="@color/custom_color_bottom_nav"
+        app:itemIconTint="@color/custom_color_bottom_nav"
+        app:menu="@menu/bottom_menu" />
 
 </RelativeLayout>
