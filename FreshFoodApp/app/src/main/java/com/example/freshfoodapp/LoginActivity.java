@@ -22,6 +22,7 @@ import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Models.Account;
 import com.example.freshfoodapp.Models.Category;
 import com.example.freshfoodapp.Models.ResponseObject;
+import com.example.freshfoodapp.Models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -44,15 +45,20 @@ public class LoginActivity extends AppCompatActivity {
     ConstraintLayout btn_loginGoogle, btnConfirm, layoutLogin;
     EditText username, password;
 
-    APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);;
+    APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
+    ;
 
     ResponseObject<Account> object;
 
+    ResponseObject<User> objectUser;
+
     Account account;
+    User user;
 
     TextView signUpBtn;
 
     String googleEmail, googleName;
+    boolean signupGG = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         Mapping();
+        if (SharedPrefManager.getInstance(this).isLoggedIn()) {
+            finish();
+            Log.d("message", "Success");
+            startActivity(new Intent(this, ProfileActivity.class));
+            return;
+        }
 
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
@@ -67,58 +79,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SignInWithGoogle();
-                getAccountGoogle();//lấy name, email
-                if (googleName != null && googleEmail != null) {
-                    apiService.login(googleEmail, "").enqueue(new Callback<ResponseObject>() {
-                        @Override
-                        public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
-                            if (response.isSuccessful()) {//login khi da co tai khoan
-                                object = response.body();
-                                Gson gson = new Gson();
-                                account = gson.fromJson(object.getData(), Account.class);
-
-                                Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
-                                startActivity(intent);
-                                Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
-                            } else if (!response.isSuccessful()) {//chua co tai khoan
-                                apiService.signup(googleEmail, "", googleName, googleEmail).enqueue(new Callback<ResponseObject>() {
-                                    @Override
-                                    public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
-                                        if (response.isSuccessful()) {
-                                            Login(googleEmail, "");
-                                            Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    @Override
-                                    public void onFailure(Call<ResponseObject> call, Throwable t) {
-                                        Log.e("Error", t.getMessage());
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<ResponseObject> call, Throwable t) {
-                            Log.e("Error", t.getMessage());
-                        }
-                    });
-                }
             }
         });
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickNoneEditText(view);
-                if(username.length()==0){
+                if (username.length() == 0) {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập username!", Toast.LENGTH_SHORT).show();
-                }
-                else if(password.length()==0){
+                } else if (password.length() == 0) {
                     Toast.makeText(getApplicationContext(), "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Login(String.valueOf(username.getText()), String.valueOf(password.getText()));
                 }
             }
@@ -182,15 +153,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
                 if (response.isSuccessful()) {
-                    object = response.body();
+                    //luu login
+                    objectUser = response.body();
                     Gson gson = new Gson();
-                    account = gson.fromJson(object.getData(), Account.class);
+                    user = gson.fromJson(objectUser.getData(), User.class);
+                    if (user == null) {
+                        signupGG = true;
+                    } else {
+                        SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
 
-                    Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
+                    signupGG = true;
+                    Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -209,6 +187,11 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 task.getResult(ApiException.class);
+                getAccountGoogle();
+                Login(googleEmail, "");
+                if (signupGG) {
+                    Signup(googleEmail, googleName);
+                }
             } catch (ApiException e) {
                 Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
 
@@ -222,5 +205,24 @@ public class LoginActivity extends AppCompatActivity {
             googleName = account.getDisplayName();
             googleEmail = account.getEmail();
         }
+    }
+
+    void Signup(String email, String name) {
+        apiService.signup(email, "", name, email).enqueue(new Callback<ResponseObject>() {
+            @Override
+            public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                if (response.isSuccessful()) {
+                    Login(googleEmail, "");
+                    Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseObject> call, Throwable t) {
+                Log.e("Error", t.getMessage());
+            }
+        });
     }
 }

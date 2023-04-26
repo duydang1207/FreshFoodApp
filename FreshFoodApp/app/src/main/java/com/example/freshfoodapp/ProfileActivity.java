@@ -72,6 +72,8 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(ProfileActivity.this,LoginActivity.class));
             }
         });
+
+        SharedPrefManager.getInstance(getApplicationContext()).logout();
     }
     void Mapping(){
         name = findViewById(R.id.et_profile_name);
