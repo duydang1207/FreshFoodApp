@@ -1,0 +1,31 @@
+package com.example.freshfoodapp.DAO;
+
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import com.example.freshfoodapp.Entity.CartEntity;
+
+import java.util.List;
+
+@Dao
+public interface CartDAO {
+    @Query("Select * from Cart")
+    List<CartEntity> getAll();
+
+    @Insert
+    void insert(CartEntity cart);
+
+    @Update
+    void update(CartEntity cart);
+
+    @Delete
+    void delete(CartEntity cart);
+    public interface iClickListener{
+        void updateCart(CartEntity cart);
+        void deleteCart(CartEntity cart);
+    }
+}
+
