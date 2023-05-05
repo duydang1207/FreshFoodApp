@@ -15,22 +15,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.freshfoodapp.API.ProductAPIService;
+import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.CategoryAdapter;
-import com.example.freshfoodapp.Adapter.ProductAdapter;
+import com.example.freshfoodapp.Adapter.ProductSoldCategoryAdapter;
 import com.example.freshfoodapp.Domain.CategoryDomain;
-import com.example.freshfoodapp.Domain.ProductDomain;
-import com.example.freshfoodapp.HomePageActivity;
+import com.example.freshfoodapp.Models.Product;
 import com.example.freshfoodapp.R;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FreshHomeFragment extends Fragment {
     private ViewFlipper viewFlipper;
     private RecyclerView rvCateList, rvProTrend;
     private RecyclerView.Adapter adapter;
     private View v;
+    private ProductAPIService productAPIService;
+    private List<Product> products;
+    private ProductSoldCategoryAdapter productSoldAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,23 +65,33 @@ public class FreshHomeFragment extends Fragment {
         cates.add(new CategoryDomain("Rau củ quả","vegetables"));
         cates.add(new CategoryDomain("Hải sản","seafood"));
 
-        adapter = new CategoryAdapter(cates);
+        adapter = new CategoryAdapter(getContext() ,cates);
         rvCateList.setAdapter(adapter);
     }
     public void recycleViewTrending(){
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvProTrend = v.findViewById(R.id.rv_homepage_protrend);
-        rvProTrend.setLayoutManager(linearLayoutManager);
+        productAPIService = RetrofitClient.getRetrofit().create(ProductAPIService.class);
+        productAPIService.getProductSold().enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                products = response.body();
+                List<Product> productList = new ArrayList<>();
+                for(int i=0; i<5; i++){
+                    productList.add(products.get(i));
+                }
 
-        ArrayList<ProductDomain> proTrends = new ArrayList<>();
-        proTrends.add(new ProductDomain("Nạc Dăm Heo","meat_pig",47500.0,1));
-        proTrends.add(new ProductDomain("Bắp bò Mỹ","meat_beef", 120000.0,2));
-        proTrends.add(new ProductDomain("Cá ngừ bò nguyên con","fish_ngu", 130000.0,3));
-        proTrends.add(new ProductDomain("Tôm càng xanh","tom", 95000.0,4));
-        proTrends.add(new ProductDomain("Bắp bò Mỹ","meat_beef", 120000.0,5));
+                productSoldAdapter = new ProductSoldCategoryAdapter(getContext() ,productList);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                rvProTrend.setLayoutManager(linearLayoutManager);
+                rvProTrend.setAdapter(productSoldAdapter);
+                productSoldAdapter.notifyDataSetChanged();
+            }
 
-        adapter = new ProductAdapter(proTrends);
-        rvProTrend.setAdapter(adapter);
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+
+            }
+        });
     }
     public void viewFiliper(){
 

@@ -94,7 +94,7 @@ public class HomePageActivity extends AppCompatActivity {
         cates.add(new CategoryDomain("Rau củ quả","vegetables"));
         cates.add(new CategoryDomain("Hải sản","seafood"));
 
-        adapter = new CategoryAdapter(cates);
+        adapter = new CategoryAdapter(getApplicationContext(), cates);
         rvCateList.setAdapter(adapter);
     }
 

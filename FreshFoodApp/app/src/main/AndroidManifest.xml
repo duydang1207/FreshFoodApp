@@ -51,10 +51,10 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".CartActivity"
+            android:name=".ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ProductOfCategoryActivity"
             android:exported="false" />
 
 
