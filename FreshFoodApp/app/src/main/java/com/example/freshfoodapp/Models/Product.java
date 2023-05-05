@@ -1,8 +1,9 @@
 package com.example.freshfoodapp.Models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Product {
+public class Product implements Serializable {
     private Long id;
     private String name;
     private String description;

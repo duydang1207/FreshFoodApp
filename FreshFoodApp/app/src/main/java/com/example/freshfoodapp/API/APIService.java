@@ -1,6 +1,7 @@
 package com.example.freshfoodapp.API;
 
 import com.example.freshfoodapp.Models.Category;
+import com.example.freshfoodapp.Models.Product;
 import com.example.freshfoodapp.Models.ResponseObject;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface APIService {
     @POST("user/new")
     Call<ResponseObject> signup(@Field("username") String username, @Field("password") String password,
                                 @Field("name") String name, @Field("email") String email);
+
+
 }
