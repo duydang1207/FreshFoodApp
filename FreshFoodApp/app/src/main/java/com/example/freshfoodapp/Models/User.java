@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     @SerializedName("id")
-    private int id;
+    private Long id;
 
 
     @SerializedName("name")
@@ -18,7 +18,7 @@ public class User implements Serializable {
     @SerializedName("avatar")
     private String avatar;
 
-    public User(int id, String name, String email, String avatar) {
+    public User(Long id, String name, String email, String avatar) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -28,11 +28,11 @@ public class User implements Serializable {
     public User() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

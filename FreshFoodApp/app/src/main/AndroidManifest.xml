@@ -24,7 +24,7 @@
 
         </activity>
         <activity
-            android:name=".BottomNavigationActivity"
+            android:name=".LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +39,9 @@
             android:name=".UploadAvatarActivity"
             android:exported="false" />
         <activity
+            android:name=".CartActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
@@ -48,7 +51,7 @@
             android:name=".HomePageActivity"
             android:exported="true" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".BottomNavigationActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
