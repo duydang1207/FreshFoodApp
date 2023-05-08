@@ -18,9 +18,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.freshfoodapp.API.APIService;
+import com.example.freshfoodapp.API.CartAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
+import com.example.freshfoodapp.Database.AbstractDatabase;
+import com.example.freshfoodapp.Entity.CartEntity;
 import com.example.freshfoodapp.Models.Account;
 import com.example.freshfoodapp.Models.Category;
+import com.example.freshfoodapp.Models.Inventory;
+import com.example.freshfoodapp.Models.OrderItem;
+import com.example.freshfoodapp.Models.Product;
 import com.example.freshfoodapp.Models.ResponseObject;
 import com.example.freshfoodapp.Models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -31,7 +37,11 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,7 +56,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText username, password;
 
     APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
-    ;
+
+    CartAPIService cartApi = RetrofitClient.getRetrofit().create(CartAPIService.class);
 
     ResponseObject<Account> object;
 
@@ -148,6 +159,41 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signinInIntent, 1000);
     }
 
+    void getCartByAccount(Long id){
+        cartApi.getCart(id).enqueue(new Callback<ResponseObject>() {
+            @Override
+            public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                ResponseObject<OrderItem> objectCart = new ResponseObject<>();
+                if(response.isSuccessful()){
+                    objectCart = response.body();
+                    Gson gson = new Gson();
+                    Type typeListOrderItem = new TypeToken<ArrayList<OrderItem>>(){}.getType();
+                    if(objectCart.getStatus().compareTo("success")==0) {
+                        List<OrderItem> orderItems = gson.fromJson(objectCart.getData(), typeListOrderItem);
+                        for (int i = 0; i < orderItems.size(); i++) {
+                            OrderItem orderItem = orderItems.get(i);
+
+                            Product product = orderItem.getInventory().getProduct();
+
+                            CartEntity cart = new CartEntity();
+                            cart.setProductCart(product);
+                            cart.setQuantity(orderItem.getQuantity());
+                            cart.setUserId(id);
+                            AbstractDatabase.getInstance(getApplicationContext()).cartDAO().insert(cart);
+                        }
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),objectCart.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseObject> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     void Login(String username, String password) {
         apiService.login(username, password).enqueue(new Callback<ResponseObject>() {
             @Override
@@ -161,8 +207,8 @@ public class LoginActivity extends AppCompatActivity {
                         signupGG = true;
                     } else {
                         SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-
-                        Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
+                        getCartByAccount(user.getId());
+                        Intent intent = new Intent(LoginActivity.this, UploadAvatarActivity.class);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }

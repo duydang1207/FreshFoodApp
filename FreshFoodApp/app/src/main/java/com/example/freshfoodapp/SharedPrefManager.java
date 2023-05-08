@@ -10,7 +10,7 @@ public class SharedPrefManager {
     private  static final  String SHARED_PREF_NAME =  "volleyregisterlogin";
     private  static final  String KEY_NAME =  "keyname";
     private  static final  String KEY_EMAIL =  "keyemail";
-//    private  static final  String KEY_ACCOUNT =  "keyaccount";
+    //    private  static final  String KEY_ACCOUNT =  "keyaccount";
     private  static final  String KEY_ID =  "keyid";
 
     private  static final  String KEY_AVATAR =  "keyavatar";
@@ -31,7 +31,7 @@ public class SharedPrefManager {
     public void userLogin(User user){
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= sharedPreferences.edit();
-        editor.putInt(KEY_ID,user.getId());
+        editor.putLong(KEY_ID,user.getId());
         editor.putString(KEY_NAME,user.getName());
         editor.putString(KEY_EMAIL,user.getEmail());
 //        editor.putInt(KEY_ACCOUNT,user.getAccount());
@@ -44,7 +44,7 @@ public class SharedPrefManager {
     public void userSignUp(User user){
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= sharedPreferences.edit();
-        editor.putInt(KEY_ID,user.getId());
+        editor.putLong(KEY_ID,user.getId());
         editor.putString(KEY_NAME,user.getName());
         editor.putString(KEY_EMAIL,user.getEmail());
 //        editor.putInt(KEY_ACCOUNT,user.getAccount());
@@ -61,11 +61,11 @@ public class SharedPrefManager {
     public  User getUser(){
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME,Context.MODE_PRIVATE);
         return  new User(
-                sharedPreferences.getInt(KEY_ID,-1),
+                sharedPreferences.getLong(KEY_ID,-1),
 //        sharedPreferences.getInt(KEY_ACCOUNT,-1),
-        sharedPreferences.getString(KEY_NAME,null),
-        sharedPreferences.getString(KEY_EMAIL,null),
-        sharedPreferences.getString(KEY_AVATAR,null)
+                sharedPreferences.getString(KEY_NAME,null),
+                sharedPreferences.getString(KEY_EMAIL,null),
+                sharedPreferences.getString(KEY_AVATAR,null)
         );
     }
 
@@ -76,6 +76,8 @@ public class SharedPrefManager {
         editor.apply();
         ctx.startActivity(new Intent(ctx, LoginActivity.class));
     }
+
+
 
 
 }

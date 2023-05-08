@@ -15,6 +15,8 @@ import com.bumptech.glide.Glide;
 import com.example.freshfoodapp.Models.Cart;
 import com.example.freshfoodapp.R;
 
+import org.w3c.dom.Text;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -58,7 +60,25 @@ public class CartAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+
         ViewHolder holder;
+
+//        //lấy context
+//        LayoutInflater inflater = (LayoutInflater)
+//                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        //gọi view chứa layout
+//        view = inflater.inflate(layout,null);
+//        //ánh xạ view
+//        TextView textName = (TextView) view.findViewById(R.id.tv_cart_productname);
+//        TextView textPrice = (TextView) view.findViewById(R.id.tv_cart_price);
+//        ImageView image = (ImageView) view.findViewById(R.id.iv_cart_imageproduct);
+//        TextView textPricePromotion = (TextView) view.findViewById(R.id.tv_cart_pricepromotion);
+//        TextView textQuantity = (TextView) view.findViewById(R.id.tv_cartItem_quantity);
+//        TextView totalQuantity = view.findViewById(R.id.tv_cart_quantity_total);
+//        Button btnPlus = (Button) view.findViewById(R.id.btn_cartItem_plus);
+//        Button btnMinus = (Button) view.findViewById(R.id.btn_cartItem_minus);
+//        TextView tvSale = (TextView) view.findViewById(R.id.iv_cart_sale);
+
 
         if (view == null){
             holder = new ViewHolder();
