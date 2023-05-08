@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.freshfoodapp.R;
 
-public class FreshProductFragment extends Fragment {
+public class FreshNotificationFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -53,6 +53,10 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.5.1"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //Swipe
+    implementation 'com.hudomju:swipe-to-dismiss-undo:1.0'
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
     //RoomDatabase
     implementation "androidx.room:room-runtime:2.5.1"
     annotationProcessor "androidx.room:room-compiler:2.5.1"

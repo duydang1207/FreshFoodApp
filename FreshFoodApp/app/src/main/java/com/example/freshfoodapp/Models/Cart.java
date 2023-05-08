@@ -10,6 +10,9 @@ public class Cart {
     private int promotion;
     private String image;
 
+    public Cart() {
+    }
+
     public Cart(int product_id, String name, int quantity, BigDecimal price, int promotion, String image) {
         this.product_id = product_id;
         this.name = name;

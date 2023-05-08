@@ -1,110 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lnl_cart_item"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp">
-
-
-
-    <ImageView
-        android:id="@+id/iv_cart_imageproduct"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        tools:srcCompat="@tools:sample/avatars"
-        android:paddingRight="5dp"/>
-
+    android:descendantFocusability="blocksDescendants"
+    android:background="@color/gray_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingTop="15dp">
+        android:orientation="horizontal"
+        android:background="@android:color/white">
 
-        <TextView
-            android:id="@+id/tv_cart_productname"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="TextView"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/iv_cart_imageproduct"
+            android:layout_width="116dp"
+            android:layout_height="124dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/avatar_icon" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingTop="15dp">
+
+            <TextView
+                android:id="@+id/tv_cart_productname"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="TextView" />
 
             <LinearLayout
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_cart_pricepromotion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView"
-                    android:textColor="#FF3737"
-                    android:textSize="16sp" />
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_cart_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/dash"
-                    android:text=""
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="157dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                >
-
-                <Button
-                    android:id="@+id/btn_cartItem_minus"
-                    android:layout_width="8dp"
-                    android:layout_height="40dp"
+                    android:layout_width="89dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/green"
-                    android:text="-"
-                    android:textColor="@color/white"
-                    app:cornerRadius="10dp" />
+                    android:text="TextView" />
 
                 <TextView
-                    android:id="@+id/tv_cartItem_quantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1"
-                    android:textAlignment="center"
-                    android:textColor="@color/green"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/btn_cartItem_plus"
-                    android:layout_width="8dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/green"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    app:cornerRadius="10dp" />
-
+                    android:id="@+id/tv_cart_pricepromotion"
+                    android:layout_width="81dp"
+                    android:layout_height="match_parent"
+                    android:text="TextView" />
             </LinearLayout>
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="157dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingTop="70dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp">
+
+            <Button
+                android:id="@+id/btn_cartItem_minus"
+                android:layout_width="8dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/green"
+                android:text="-"
+                android:textColor="@color/white"
+                app:cornerRadius="10dp" />
+
+            <TextView
+                android:id="@+id/tv_cartItem_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="1"
+                android:textAlignment="center"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_cartItem_plus"
+                android:layout_width="8dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/green"
+                android:text="+"
+                android:textColor="@color/white"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="3"
+        android:height="@dimen/list_item_height"
+        android:paddingLeft="@dimen/list_item_padding_sides"
+        android:paddingRight="@dimen/list_item_padding_sides">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/txt_delete"
+            android:gravity="center_vertical"
+            android:text="Vuốt để xóa"
+            android:clickable="false"
+            android:layout_weight="2"
+            android:hapticFeedbackEnabled="true"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/txt_undo"
+            android:text="Hủy"
+            android:clickable="false"
+            android:layout_weight="1"
+            android:textColor="@color/yellow"/>
     </LinearLayout>
 
-</LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="170dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_cart_pricepromotion"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="TextView"-->
+<!--                android:textColor="#FF3737"-->
+<!--                android:textSize="16sp" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_cart_price"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/dash"-->
+<!--                android:text=""-->
+<!--                android:textSize="12sp" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="157dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            >-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_cartItem_minus"-->
+<!--                android:layout_width="8dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:backgroundTint="@color/green"-->
+<!--                android:text="-"-->
+<!--                android:textColor="@color/white"-->
+<!--                app:cornerRadius="10dp" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_cartItem_quantity"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="1"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textColor="@color/green"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_cartItem_plus"-->
+<!--                android:layout_width="8dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:backgroundTint="@color/green"-->
+<!--                android:text="+"-->
+<!--                android:textColor="@color/white"-->
+<!--                app:cornerRadius="10dp" />-->
+
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
+
+</FrameLayout>
