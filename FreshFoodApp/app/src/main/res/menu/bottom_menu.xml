@@ -6,7 +6,7 @@
         android:title="Trang chủ"
         android:icon="@drawable/home" />
 
-    <item android:id="@+id/freshProduct"
+    <item android:id="@+id/freshLove"
         android:title="Yêu thích"
         android:icon="@drawable/heart" />
 
@@ -14,11 +14,13 @@
         android:title="Giỏ hàng"
         android:icon="@drawable/cart" />
 
+    <item android:id="@+id/freshNotification"
+        android:title="Thông báo"
+        android:icon="@drawable/notification" />
+
     <item android:id="@+id/freshUser"
         android:title="Người dùng"
         android:icon="@drawable/user" />
 
-    <item android:id="@+id/freshSetting"
-        android:title="Cài đặt"
-        android:icon="@drawable/setting" />
+
 </menu>

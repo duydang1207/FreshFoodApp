@@ -15,8 +15,8 @@ public class FreshCartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_fresh_love, null);
-        getActivity().setTitle("Favorite");
+        View v = inflater.inflate(R.layout.fragment_fresh_cart, null);
+        getActivity().setTitle("Cart");
         return v;
     }
 }
