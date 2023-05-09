@@ -49,7 +49,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         BadgeDrawable badgeDrawable2 = bottomNavigationView.getOrCreateBadge(R.id.freshNotification);
         badgeDrawable2.setVisible(true);
-        badgeDrawable2.setNumber(10);
+        badgeDrawable2.setNumber(7);
 
         //Thanh navigation sẽ ẩn khi lướt màn hình
 //        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();

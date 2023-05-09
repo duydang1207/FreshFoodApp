@@ -20,7 +20,7 @@
             android:layout_height="300dp"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/rounded_corner_product_detail"
-            app:srcCompat="@drawable/fish_ngu" />
+            app:srcCompat="@drawable/meat" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnBackProDt"
