@@ -18,13 +18,15 @@ public class User implements Serializable {
     @SerializedName("avatar")
     private String avatar;
 
+    @SerializedName("password")
+    private String password;
+
     public User(Long id, String name, String email, String avatar) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.avatar = avatar;
     }
-
     public User() {
     }
 
@@ -59,5 +61,13 @@ public class User implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

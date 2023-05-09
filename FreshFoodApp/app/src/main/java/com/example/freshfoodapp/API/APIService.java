@@ -15,7 +15,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface APIService {
 
@@ -37,5 +39,12 @@ public interface APIService {
     @Multipart
     @POST("upload_images/fileupload/user")
     Call<User> uploadImage(@Part("id") RequestBody id, @Part MultipartBody.Part file);
+
+    @FormUrlEncoded
+    @PUT("user/changePassword")
+    Call<ResponseObject> changePassword(@Field("id") Long id, @Field("newPass") String newpassword);
+
+    @GET("user/{id}")
+    Call<User> getUser(@Path("id") Long id);
 
 }
