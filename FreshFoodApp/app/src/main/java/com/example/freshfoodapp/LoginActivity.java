@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
             finish();
             Log.d("message", "Success");
-            startActivity(new Intent(this, ProfileActivity.class));
+            startActivity(new Intent(this, BottomNavigationActivity.class));
             return;
         }
 
@@ -208,7 +208,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
                         getCartByAccount(user.getId());
-                        Intent intent = new Intent(LoginActivity.this, UploadAvatarActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
