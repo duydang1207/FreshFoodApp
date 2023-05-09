@@ -14,4 +14,5 @@
     <color name="gray_background">#757575</color>
     <color name="yellow">#FFBB33</color>
     <color name="red">#FF3737</color>
+    <color name="colordelete">#EE6457</color>
 </resources>
