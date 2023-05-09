@@ -8,15 +8,19 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.freshfoodapp.Database.AbstractDatabase;
 import com.example.freshfoodapp.FreshPanel.FreshCartFragment;
 import com.example.freshfoodapp.FreshPanel.FreshHomeFragment;
 import com.example.freshfoodapp.FreshPanel.FreshNotificationFragment;
 import com.example.freshfoodapp.FreshPanel.FreshLoveFragment;
 import com.example.freshfoodapp.FreshPanel.FreshUserFragment;
 import com.example.freshfoodapp.FreshPanel.ViewPagerAdapter;
+import com.example.freshfoodapp.Entity.CartEntity;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.List;
 
 public class BottomNavigationActivity extends AppCompatActivity {
 
@@ -36,9 +40,12 @@ public class BottomNavigationActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.freshfood_bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment).commit();
 
+        List<CartEntity> carts = AbstractDatabase.getInstance(getApplicationContext()).cartDAO().getAll();
+
         BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.freshCart);
         badgeDrawable.setVisible(true);
-        badgeDrawable.setNumber(5);
+        badgeDrawable.setNumber(carts.size());
+
 
         BadgeDrawable badgeDrawable2 = bottomNavigationView.getOrCreateBadge(R.id.freshNotification);
         badgeDrawable2.setVisible(true);

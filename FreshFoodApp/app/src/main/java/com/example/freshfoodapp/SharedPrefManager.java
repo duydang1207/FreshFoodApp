@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import com.example.freshfoodapp.Models.User;
 
 public class SharedPrefManager {
-    private  static final  String SHARED_PREF_NAME =  "volleyregisterlogin";
+    static final  String SHARED_PREF_NAME =  "volleyregisterlogin";
     private  static final  String KEY_NAME =  "keyname";
     private  static final  String KEY_EMAIL =  "keyemail";
     //    private  static final  String KEY_ACCOUNT =  "keyaccount";
