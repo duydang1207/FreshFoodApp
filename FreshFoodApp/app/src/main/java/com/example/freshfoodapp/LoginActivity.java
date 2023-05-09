@@ -167,8 +167,8 @@ public class LoginActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     objectCart = response.body();
                     Gson gson = new Gson();
-                    Type typeListOrderItem = new TypeToken<ArrayList<OrderItem>>(){}.getType();
                     if(objectCart.getStatus().compareTo("success")==0) {
+                        Type typeListOrderItem = new TypeToken<ArrayList<OrderItem>>(){}.getType();
                         List<OrderItem> orderItems = gson.fromJson(objectCart.getData(), typeListOrderItem);
                         for (int i = 0; i < orderItems.size(); i++) {
                             OrderItem orderItem = orderItems.get(i);

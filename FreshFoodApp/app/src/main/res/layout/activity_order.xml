@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E6E6E6">
@@ -156,71 +155,71 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/border_layout"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
-
-            <TextView
-                android:id="@+id/tv_order1"
+            <LinearLayout
+                android:id="@+id/linearLayout7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8sp"
-                android:layout_marginTop="8sp"
-                android:fontFamily="@font/gabriela"
-                android:text="Món"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="8dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
 
-            <ListView
-                android:id="@+id/lv_pro_order"
-                android:layout_width="match_parent"
-                android:layout_height="200sp"
-                android:layout_marginLeft="8sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginRight="8sp" />
+                <TextView
+                    android:id="@+id/tv_order1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8sp"
+                    android:layout_marginTop="8sp"
+                    android:fontFamily="@font/gabriela"
+                    android:text="Món"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_OrderItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginRight="8sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50sp"
+                    android:layout_marginLeft="8sp"
+                    android:layout_marginTop="8sp"
+                    android:layout_marginRight="8sp"
+                    android:background="@drawable/border_layout"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/tv_order2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/gabriela"
+                        android:gravity="center"
+                        android:text="Tổng tiền"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_total_price_order"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:text="150000"
+                        android:textColor="#404040"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50sp"
-                android:layout_marginLeft="8sp"
-                android:layout_marginTop="8sp"
-                android:layout_marginRight="8sp"
-                android:background="@drawable/border_layout"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-                <TextView
-                    android:id="@+id/tv_order2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/gabriela"
-                    android:gravity="center"
-                    android:text="Tổng tiền"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_total_price_order"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center_horizontal"
-                    android:text="150000"
-                    android:textColor="#404040"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="150sp"
             android:layout_marginTop="8dp"
@@ -271,7 +270,7 @@
                 android:weightSum="4">
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/tv_Order_TotalPriceMain"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="8sp"
