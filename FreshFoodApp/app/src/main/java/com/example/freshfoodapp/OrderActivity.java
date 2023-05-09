@@ -4,18 +4,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.freshfoodapp.API.CartAPIService;
+import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.OrderAdapter;
 import com.example.freshfoodapp.Database.AbstractDatabase;
 import com.example.freshfoodapp.Entity.CartEntity;
+import com.example.freshfoodapp.Models.Orders;
+import com.example.freshfoodapp.Models.ProductQuantity;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -24,18 +37,24 @@ public class OrderActivity extends AppCompatActivity {
     List<CartEntity> listCart;
     TextView totalPrice,totalPriceMain, btnPayment;
     EditText phone,address;
+    ProductQuantity list;
+
+    CartAPIService apiService = RetrofitClient.getRetrofit().create(CartAPIService.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         Mapping();
+
         listCart = AbstractDatabase.getInstance(getApplicationContext()).cartDAO().getAll();
         adapter = new OrderAdapter(getApplicationContext(),listCart);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
         rvOrder.setLayoutManager(layoutManager);
         rvOrder.setAdapter(adapter);
-        TotalPrice();
+        list = (ProductQuantity) getIntent().getSerializableExtra("list");
+        BigDecimal totalPrice = TotalPrice();
 
+        Long id= SharedPrefManager.getInstance(getApplicationContext()).getUser().getId();
         btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,15 +64,50 @@ public class OrderActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Vui lòng nhập số địa chỉ",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Payment();
+                    Payment(list,id,totalPrice);
                 }
             }
         });
     }
-    void Payment(){
 
+    public void showAlertDialog(Context context)  {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        // Set Title and Message:
+        builder.setTitle("Thông báo").setMessage("Bạn đã đặt hàng thành công");
+
+        //
+        builder.setCancelable(true);
+
+        // Create "Yes" button with OnClickListener.
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                AbstractDatabase.getInstance(getApplicationContext()).cartDAO().deleteAll();
+                startActivity(new Intent(getApplicationContext(),BottomNavigationActivity.class));
+            }
+        });
+
+
+        // Create AlertDialog:
+        AlertDialog alert = builder.create();
+        alert.show();
     }
-    void TotalPrice(){
+
+    void Payment(ProductQuantity list, Long userId, BigDecimal totalPrice){
+        apiService.payment(list,userId,String.valueOf(phone.getText()),String.valueOf(address.getText()),totalPrice)
+                .enqueue(new Callback<Orders>() {
+                    @Override
+                    public void onResponse(Call<Orders> call, Response<Orders> response) {
+                        showAlertDialog(OrderActivity.this);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Orders> call, Throwable t) {
+                        Log.e("Trang thanh toan",t.getMessage());
+                    }
+                });
+    }
+    BigDecimal TotalPrice(){
         BigDecimal total = BigDecimal.valueOf(0);
         int quantity = 0;
         for(int i =0;i<listCart.size();i++)
@@ -63,6 +117,7 @@ public class OrderActivity extends AppCompatActivity {
         }
         totalPrice.setText(String.valueOf("đ" + total));
         totalPriceMain.setText(String.valueOf("đ" + total));
+        return total;
     }
 
     void Mapping(){

@@ -36,6 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
@@ -166,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                 ResponseObject<OrderItem> objectCart = new ResponseObject<>();
                 if(response.isSuccessful()){
                     objectCart = response.body();
-                    Gson gson = new Gson();
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
                     if(objectCart.getStatus().compareTo("success")==0) {
                         Type typeListOrderItem = new TypeToken<ArrayList<OrderItem>>(){}.getType();
                         List<OrderItem> orderItems = gson.fromJson(objectCart.getData(), typeListOrderItem);
