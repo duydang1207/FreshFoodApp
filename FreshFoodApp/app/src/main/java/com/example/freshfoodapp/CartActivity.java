@@ -1,32 +1,37 @@
 package com.example.freshfoodapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import android.widget.Button;
-import android.widget.ListAdapter;
+import android.widget.Toast;
 
 
 import com.example.freshfoodapp.Adapter.CartAdapter;
-import com.example.freshfoodapp.Adapter.CartAdapterEntity;
 import com.example.freshfoodapp.Database.AbstractDatabase;
 import com.example.freshfoodapp.Entity.CartEntity;
-import com.example.freshfoodapp.Models.Cart;
-import com.hudomju.swipe.SwipeToDismissTouchListener;
-import com.hudomju.swipe.adapter.ListViewAdapter;
+import com.example.freshfoodapp.Orther.SwipeHelper;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
@@ -36,68 +41,142 @@ public class CartActivity extends AppCompatActivity {
     Button btnPlus;
     Button btnMinus;
 
-    static TextView totalQuantity;
-    CartAdapter cartAdapter;
+    private boolean btnDeleteCart;
+    private boolean moving = false;
+    private int posSwiped = -1;
+    private int lastSwiped = -1;
 
-    private int[] myImageList = new int[]{R.drawable.fish_ngu,R.drawable.meat_beef,
-            R.drawable.meat_pig, R.drawable.tom, R.drawable.fish_ngu};
-    private String[] titlePro = new String[]{"Cá basa tươi sống","Cá basa tươi sống",
-    "Cá basa tươi sống","Cá basa tươi sống","Cá basa tươi sống"};
-    private int[] proFee = new int[]{15000,14000,25000,30000,10000};
+
+    static TextView totalQuantity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
-
-//        //Mapping();
-//        //Tạo Adapter
-//        carts = cartList();
-//        listView = (ListView) findViewById(R.id.lv_cart_products);
-//        cartAdapter = new CartAdapter(CartActivity.this, carts);
-//        //truyền dữ liệu từ adapter ra listview
-//        listView.setAdapter(cartAdapter);
         Mapping();
 
         carts = AbstractDatabase.getInstance(getApplicationContext()).cartDAO().getAll();
-        CartAdapterEntity adapter = new CartAdapterEntity(getApplicationContext(), carts);
+        CartAdapter adapter = new CartAdapter(getApplicationContext(), carts);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
         TotalPrice();
         rvCart.setLayoutManager(layoutManager);
         rvCart.setAdapter(adapter);
 
-//        final SwipeToDismissTouchListener<ListViewAdapter> touchListener =
-//                new SwipeToDismissTouchListener<>(
-//                        new ListViewAdapter(listView),
-//                        new SwipeToDismissTouchListener.DismissCallbacks<ListViewAdapter>() {
-//                            @Override
-//                            public boolean canDismiss(int position) {
-//                                return true;
-//                            }
-//
-//                            @Override
-//                            public void onDismiss(ListViewAdapter view, int position) {
-//                                cartAdapter.remove(position);
-//                                Toast.makeText(CartActivity.this, "Position " + position, Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//
-//        listView.setOnTouchListener(touchListener);
-//        listView.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        SwipeHelper swipeHelper = new SwipeHelper(CartActivity.this, rvCart) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Xóa",
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(int pos) {
+                                // TODO: onDelete
+                                Log.d("Alert","Deleted");
+                            }
+                        }
+                ));
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeHelper);
+        itemTouchHelper.attachToRecyclerView(rvCart);
+//        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 //            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (touchListener.existPendingDismisses()) {
-//                    touchListener.undoPendingDismiss();
-//                    Toast.makeText(CartActivity.this, "Đã hủy xóa", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(CartActivity.this, "Position " + position, Toast.LENGTH_SHORT).show();
-//                }
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//                moving = true;
+//                return false;
 //            }
-//        });
+//
+//            @Override
+//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//                moving = false;
+//                int position = viewHolder.getAdapterPosition();
+//                if (direction == ItemTouchHelper.LEFT) {
+//                    //adapter.notifyItemChanged(position);
+//                    Toast.makeText(CartActivity.this, "Swipe left", Toast.LENGTH_SHORT).show();
+//                }
+//                btnDeleteCart = true;
+//            }
+//
+//            @Override
+//            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+//                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+//                    View itemView = viewHolder.itemView;
+//                    float height = itemView.getBottom() - itemView.getTop();
+//                    float width = height / 3;
+//                    posSwiped = viewHolder.getAdapterPosition();
+//
+//                    if (dX < 0) {
+//                        Paint p = new Paint();
+//                        int color = ContextCompat.getColor(getApplicationContext(), R.color.colordelete);
+//                        float deleteBtnLeft = itemView.getRight() + dX;
+//                        p.setColor(color);
+//                        RectF buttonDelete = new RectF(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+//                        c.drawRect(buttonDelete, p);
+//                        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_delete);
+//                        float margin = (dX / 3 - width) / 2;
+//                        RectF iconDest =new RectF(itemView.getRight() + margin, itemView.getTop() + width, itemView.getRight() + (margin + width), itemView.getBottom() - width);
+//                        c.drawBitmap(icon, null, iconDest, p);
+//
+//                        if (dX <= - deleteBtnLeft){
+//                            btnDeleteCart = true;
+//                            moving = false;
+//                        }else {
+//                            btnDeleteCart = false;
+//                            moving = true;
+//                        }
+//                        if (dX == 0.0f){
+//                            moving = false;
+//                        }
+//
+//                        if (btnDeleteCart){
+//                            clickButtonDeleteProCartListener(recyclerView, viewHolder, posSwiped);
+//                        }
+//                    }
+//                }
+//                super.onChildDraw(c, recyclerView, viewHolder, dX/3, dY, actionState, isCurrentlyActive);
+//            }
+//
+//            private void clickButtonDeleteProCartListener(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int posSwiped) {
+//                viewHolder = recyclerView.findViewHolderForAdapterPosition(posSwiped);
+//                View itemView = viewHolder.itemView;
+//
+//
+//                itemView.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View view, MotionEvent e) {
+//                        if (posSwiped < 0)
+//                        {
+//                            return false;
+//                        }
+//                        Point point = new Point((int) e.getRawX(), (int) e.getRawY());
+//
+//                        Rect rect = new Rect();
+//                        itemView.getGlobalVisibleRect(rect);
+//                        if (e.getAction() == MotionEvent.ACTION_DOWN || e.getAction() == MotionEvent.ACTION_UP ||e.getAction() == MotionEvent.ACTION_MOVE) {
+//                            if (rect.top < point.y && rect.bottom > point.y)
+////                                gestureDetector.onTouchEvent(e);
+//                                Toast.makeText(getApplicationContext(), "vl", Toast.LENGTH_SHORT).show();
+//                            else {
+////                                recoverQueue.add(swipedPos);
+////                                posSwiped = -1;
+////                                recoverSwipedItem();
+//                            Toast.makeText(getApplicationContext(), "đã xóa", Toast.LENGTH_SHORT).show();
+//
+//                            }
+//                        }
+//                        return false;
+//                    }
+//                });
+//            }
+//
+//        };
+
+
 
     }
+
     public static void TotalPrice(){
         BigDecimal total = BigDecimal.valueOf(0);
         int quantity = 0;
@@ -118,18 +197,5 @@ public class CartActivity extends AppCompatActivity {
         btnPlus = findViewById(R.id.btn_cartItem_plus);
         totalQuantity = findViewById(R.id.tv_cart_quantity_total);
     }
-    private ArrayList<Cart> cartList(){
-        ArrayList<Cart> cartlst = new ArrayList<>();
 
-        for (int i=0; i < 5; i++){
-            Cart cart = new Cart();
-            cart.setName(titlePro[i]);
-            cart.setImage(String.valueOf(myImageList[i]));
-            cart.setPromotion(0);
-            cart.setPrice(BigDecimal.valueOf(proFee[i]));
-            cartlst.add(cart);
-        }
-
-        return cartlst;
-    }
 }
