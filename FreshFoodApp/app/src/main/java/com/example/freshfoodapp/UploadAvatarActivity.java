@@ -19,15 +19,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.freshfoodapp.API.APIService;
 import com.example.freshfoodapp.API.RetrofitClient;
-import com.example.freshfoodapp.File.RealPathUtil;
+import com.example.freshfoodapp.FreshPanel.File.RealPathUtil;
 import com.example.freshfoodapp.Models.ResponseObject;
 import com.example.freshfoodapp.Models.User;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;

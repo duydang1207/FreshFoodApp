@@ -25,10 +25,21 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:exported="true"></activity>
+            android:exported="false"></activity>
+
+
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+            <activity
+                android:name=".HomePageActivity"
+                android:exported="false" />
         <activity
             android:name=".OrderActivity"
-            android:exported="true">
+            android:exported="false" />
+            <activity
+                android:name=".OrderListActivity"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,15 +52,7 @@
         <activity
             android:name=".BottomNavigationActivity"
             android:exported="false" />
-        <activity
-            android:name=".SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomePageActivity"
-            android:exported="true" />
+
 
         <activity
             android:name=".ProfileActivity"
