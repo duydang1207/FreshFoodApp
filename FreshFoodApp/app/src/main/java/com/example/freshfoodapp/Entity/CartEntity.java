@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 
 @Entity(tableName = "cart")
 public class CartEntity implements Serializable {
-
     @PrimaryKey(autoGenerate = true)
     private int id;
     private Long userId;

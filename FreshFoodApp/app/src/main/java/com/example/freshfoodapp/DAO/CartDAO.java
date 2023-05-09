@@ -18,6 +18,9 @@ public interface CartDAO {
     @Query("Delete from cart")
     void deleteAll();
 
+    @Query("Delete from cart where cart.productId=:id")
+    void deleteProduct(Long id);
+
     @Insert
     void insert(CartEntity cart);
 

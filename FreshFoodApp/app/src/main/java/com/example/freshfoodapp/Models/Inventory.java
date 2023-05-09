@@ -1,8 +1,9 @@
 package com.example.freshfoodapp.Models;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
 
-public class Inventory {
+public class Inventory implements Serializable {
     Long id;
     Product product;
     private int quantity;
