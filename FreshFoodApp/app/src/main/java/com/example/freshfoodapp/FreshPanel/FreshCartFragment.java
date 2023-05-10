@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +44,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FreshCartFragment extends Fragment {
+
+
     RecyclerView rvCart;
     public static List<CartEntity> carts;
     public static TextView itemTotalPrice;
@@ -53,57 +58,72 @@ public class FreshCartFragment extends Fragment {
     Boolean isTrue = true;
     ResponseObject<ProductQuantity> responseObject;
     ProductQuantity sendData;
-
+    CartAdapter adapter;
+    SwipeHelper swipeHelper;
     static TextView totalQuantity;
     CartAPIService apiService = RetrofitClient.getRetrofit().create(CartAPIService.class);
-
     View v;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        v = inflater.inflate(R.layout.activity_cart, container, false);
+        v = inflater.inflate(R.layout.fragment_fresh_cart, container, false);
+        return v;
+    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(v, savedInstanceState);
         Mapping();
-        carts = AbstractDatabase.getInstance(getActivity().getApplicationContext()).cartDAO().getAll();
-        CartAdapter adapter = new CartAdapter(getActivity().getApplicationContext(), carts);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false);
-        TotalPrice();
+        carts = new ArrayList<>();
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        rvCart.setHasFixedSize(true);
         rvCart.setLayoutManager(layoutManager);
-        rvCart.setAdapter(adapter);
-
         btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkProduct(carts);
             }
         });
-
-        SwipeHelper swipeHelper = new SwipeHelper(getActivity().getApplicationContext(), rvCart) {
-            @Override
-            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-                underlayButtons.add(new SwipeHelper.UnderlayButton(
-                        "Xóa",
-                        0,
-                        Color.parseColor("#FF3C30"),
-                        new SwipeHelper.UnderlayButtonClickListener() {
-                            @Override
-                            public void onClick(int pos) {
-                                // TODO: onDelete
-                                Log.d("Alert","Deleted");
-                            }
-                        }
-                ));
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeHelper);
-        itemTouchHelper.attachToRecyclerView(rvCart);
-
-        return v;
+        getProductCart();
     }
     void deleteProductFailed(List<Long> id){
-        AbstractDatabase database = AbstractDatabase.getInstance(getActivity().getApplicationContext());
+        AbstractDatabase database = AbstractDatabase.getInstance(getActivity());
         for(int i =0; i<id.size();i++){
             database.cartDAO().deleteProduct(id.get(i));
+        }
+    }
+    private void getProductCart(){
+        carts = AbstractDatabase.getInstance(getContext()).cartDAO().getAll();
+        if (carts != null && carts.size() != 0) {
+            adapter = new CartAdapter(getActivity(), carts);
+            rvCart.setAdapter(adapter);
+            TotalPrice();
+            swipeHelper = new SwipeHelper(getActivity(), rvCart) {
+                @Override
+                public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                    underlayButtons.add(new SwipeHelper.UnderlayButton(
+                            "Xóa",
+                            0,
+                            Color.parseColor("#FF3C30"),
+                            new SwipeHelper.UnderlayButtonClickListener() {
+                                @Override
+                                public void onClick(int pos) {
+                                    CartEntity cart = carts.get(pos);
+                                    AbstractDatabase.getInstance(getActivity()).cartDAO().deleteProduct(cart.getProductId());
+
+                                    carts.remove(pos);
+                                    adapter.notifyItemRemoved(pos);
+
+                                    TotalPrice();
+                                    Log.e("position", String.valueOf(pos));
+                                    Toast.makeText(getActivity(), "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                    ));
+                }
+            };
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeHelper);
+            itemTouchHelper.attachToRecyclerView(rvCart);
         }
     }
     void checkProduct(List<CartEntity> carts){

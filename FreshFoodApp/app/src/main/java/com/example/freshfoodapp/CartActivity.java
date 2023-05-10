@@ -76,9 +76,8 @@ public class CartActivity extends AppCompatActivity {
     Boolean isTrue = true;
     ResponseObject<ProductQuantity> responseObject;
     ProductQuantity sendData;
-
-
-
+    CartAdapter adapter;
+    SwipeHelper swipeHelper;
     static TextView totalQuantity;
     CartAPIService apiService = RetrofitClient.getRetrofit().create(CartAPIService.class);
 
@@ -90,7 +89,7 @@ public class CartActivity extends AppCompatActivity {
         Mapping();
 
         carts = AbstractDatabase.getInstance(getApplicationContext()).cartDAO().getAll();
-        CartAdapter adapter = new CartAdapter(getApplicationContext(), carts);
+        adapter = new CartAdapter(getApplicationContext(), carts);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
         TotalPrice();
         rvCart.setLayoutManager(layoutManager);
@@ -103,7 +102,12 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-        SwipeHelper swipeHelper = new SwipeHelper(CartActivity.this, rvCart) {
+        DeleteItem();
+
+    }
+
+    void DeleteItem(){
+        swipeHelper = new SwipeHelper(CartActivity.this, rvCart) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
@@ -113,8 +117,18 @@ public class CartActivity extends AppCompatActivity {
                         new SwipeHelper.UnderlayButtonClickListener() {
                             @Override
                             public void onClick(int pos) {
-                                // TODO: onDelete
-                                Log.d("Alert","Deleted");
+                                CartEntity cart = carts.get(pos);
+                                AbstractDatabase.getInstance(getApplicationContext()).cartDAO().deleteProduct(cart.getProductId());
+
+                                carts.remove(viewHolder.getAdapterPosition());
+                                adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+
+
+                                TotalPrice();
+                                Toast.makeText(getApplicationContext(), "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
+
+                                Log.e("position",String.valueOf(pos));
+//                                DeleteItem(rvCart);
                             }
                         }
                 ));
@@ -124,7 +138,6 @@ public class CartActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(rvCart);
 
     }
-
 
     void deleteProductFailed(List<Long> id){
         AbstractDatabase database = AbstractDatabase.getInstance(getApplicationContext());
