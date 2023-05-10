@@ -2,6 +2,7 @@ package com.example.freshfoodapp.FreshPanel;
 
 import android.content.Intent;
 import android.graphics.Color;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.freshfoodapp.API.CartAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.CartAdapter;
@@ -32,6 +34,7 @@ import com.example.freshfoodapp.Models.ProductQuantity;
 import com.example.freshfoodapp.Models.ResponseObject;
 import com.example.freshfoodapp.OrderActivity;
 import com.example.freshfoodapp.Orther.SwipeHelper;
+
 import com.example.freshfoodapp.R;
 import com.google.gson.Gson;
 
@@ -68,6 +71,7 @@ public class FreshCartFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_fresh_cart, container, false);
+
         return v;
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){

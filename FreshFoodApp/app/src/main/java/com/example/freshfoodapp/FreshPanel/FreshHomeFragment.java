@@ -1,11 +1,13 @@
 package com.example.freshfoodapp.FreshPanel;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -15,19 +17,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.freshfoodapp.API.ProductAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.CategoryAdapter;
 import com.example.freshfoodapp.Adapter.ProductSoldCategoryAdapter;
 import com.example.freshfoodapp.Domain.CategoryDomain;
 import com.example.freshfoodapp.Models.Product;
+import com.example.freshfoodapp.Models.User;
 import com.example.freshfoodapp.R;
+import com.example.freshfoodapp.SharedPrefManager;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +46,9 @@ public class FreshHomeFragment extends Fragment {
     private ProductAPIService productAPIService;
     private List<Product> products;
     private ProductSoldCategoryAdapter productSoldAdapter;
+
+    TextView name;
+    CircleImageView img;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,6 +60,7 @@ public class FreshHomeFragment extends Fragment {
         viewFlipper = v.findViewById(R.id.vf_homepage_imgFlipper);
 
         viewFiliper();
+        getUser();
         return v;
     }
     public void recycleViewCategory(){
@@ -136,5 +146,13 @@ public class FreshHomeFragment extends Fragment {
         viewFlipper.setInAnimation(slidein);
 
         viewFlipper.setOutAnimation(slideout);
+    }
+    void getUser(){
+        User user = SharedPrefManager.getInstance(getContext()).getUser();
+        name= v.findViewById(R.id.tv_homepage_name);
+        img = v.findViewById(R.id.iv_homepage_imgProfile);
+
+        name.setText(user.getName());
+        Glide.with(getActivity().getApplicationContext()).load(user.getAvatar()).into(img);
     }
 }
