@@ -1,5 +1,9 @@
 package com.example.freshfoodapp;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Glide.*;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,7 +24,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.freshfoodapp.API.APIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.FreshPanel.File.RealPathUtil;
@@ -60,8 +65,11 @@ public class UploadAvatarActivity extends AppCompatActivity {
         User user = SharedPrefManager.getInstance(getApplicationContext()).getUser();
         id = user.getId();
         if(user.getAvatar()!=null)
-            Glide.with(getApplicationContext()).load(user.getAvatar()).into(avatar);
-        //click back
+            Glide.with(getApplicationContext())
+                    .load(user.getAvatar())
+                    .signature(new ObjectKey(String.valueOf(System.currentTimeMillis())))
+                    .into(avatar);
+
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +105,8 @@ public class UploadAvatarActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
                 SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
+                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(intent);
             }
 
             @Override
@@ -105,8 +115,7 @@ public class UploadAvatarActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-        startActivity(intent);
+
 
     }
     public void onClickRequestPermission() {
@@ -143,7 +152,6 @@ public class UploadAvatarActivity extends AppCompatActivity {
                     }
                 }
             }
-
     );
     private void openGallery() {
         Intent intent = new Intent();
