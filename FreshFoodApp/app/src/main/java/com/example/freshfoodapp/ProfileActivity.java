@@ -14,12 +14,14 @@ import android.widget.Toast;
 
 import com.example.freshfoodapp.API.APIService;
 import com.example.freshfoodapp.API.RetrofitClient;
+import com.example.freshfoodapp.FreshPanel.FreshUserFragment;
 import com.example.freshfoodapp.Models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,8 +32,9 @@ public class ProfileActivity extends AppCompatActivity {
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
     Button btnLogout, btnChangePass;
-    ImageView imgAvatar, btn_back;
+    FreshUserFragment userFragment = new FreshUserFragment();
 
+    ImageView imgAvatar, btn_back;
     EditText name, email;
     Context context = this;
     APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);;
@@ -70,7 +73,11 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+//                startActivity(new Intent(ProfileActivity.this, BottomNavigationActivity.class));
+                setContentView(R.layout.activity_bottom_navigation);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, userFragment).commit();
+
             }
         });
         btnChangePass.setOnClickListener(new View.OnClickListener() {

@@ -6,16 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.freshfoodapp.BottomNavigationActivity;
 import com.example.freshfoodapp.ProfileActivity;
 import com.example.freshfoodapp.R;
 
 public class FreshUserFragment extends Fragment {
     private LinearLayout btn_profile;
+    FreshLoveFragment freshLoveFragment = new FreshLoveFragment();
+    private LinearLayout btn_love;
     private View v;
     @Nullable
     @Override
@@ -28,9 +34,16 @@ public class FreshUserFragment extends Fragment {
                 startActivity(new Intent(getActivity(), ProfileActivity.class));
             }
         });
+        btn_love.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
         return v;
     }
+
     private void Mapping(){
         btn_profile = v.findViewById(R.id.btn_profile_user);
+        btn_love = v.findViewById(R.id.btn_love);
     }
 }
