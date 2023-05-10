@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -22,13 +22,8 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class Received_Order_Fragment extends Fragment {
-    private  String btnstt="Mua Lại";
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
+    private  String mfragment ="received";
+    private Fragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,12 +44,12 @@ public class Received_Order_Fragment extends Fragment {
         listOrder.add(new OrderList(1, 1000, "https://cdn.tgdd.vn/Products/Images/8782/279707/bhx/dau-ca-basa-vi-600gr-1-3-dau-202209061436554082.jpg", "Đầu cá basa  ", 100000, 1 ));
         listOrder.add(new OrderList(2, 1000, "https://cdn.tgdd.vn/Products/Images/8782/273937/bhx/muc-ong-nguyen-con-khay-500g-10-13-con-202303010858110302.jpg", "Mực ống nguyên con", 25000, 1));
 
-//        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(container.getContext(), R.layout.order_view, listOrder);
-        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(requireContext() , R.layout.order_view, listOrder, btnstt);        listViewOrder.setAdapter(orderListViewAdapter);
+
+        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(requireContext() , R.layout.order_view, listOrder, mfragment);        listViewOrder.setAdapter(orderListViewAdapter);
         if(!listOrder.isEmpty())
         {
-            TextView myTextView = view.findViewById(R.id.textview1);
-            myTextView.setVisibility(View.GONE);
+            LinearLayout checkorder = view.findViewById(R.id.empty_order);
+            checkorder.setVisibility(View.GONE);
         }
         return view;
 

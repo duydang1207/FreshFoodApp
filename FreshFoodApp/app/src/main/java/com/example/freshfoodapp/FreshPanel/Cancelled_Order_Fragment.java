@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.freshfoodapp.Adapter.OrderListViewAdapter;
 import com.example.freshfoodapp.Models.OrderList;
@@ -17,8 +17,8 @@ import com.example.freshfoodapp.R;
 import java.util.ArrayList;
 
 public class Cancelled_Order_Fragment extends Fragment {
-    private  String btnstt="Chi tiết đơn hủy";
-
+    private  String mframent="cancelled";
+    private Fragment fragment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +38,12 @@ public class Cancelled_Order_Fragment extends Fragment {
 
 
 //        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(container.getContext(), R.layout.order_view, listOrder);
-        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(requireContext() , R.layout.order_view, listOrder, btnstt);
+        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(requireContext() , R.layout.order_view, listOrder, mframent);
         listViewOrder.setAdapter(orderListViewAdapter);
         if(!listOrder.isEmpty())
         {
-            TextView myTextView = view.findViewById(R.id.textview1);
-            myTextView.setVisibility(View.GONE);
+            LinearLayout checkorder = view.findViewById(R.id.empty_order);
+            checkorder.setVisibility(View.GONE);
         }
         return view;
     }

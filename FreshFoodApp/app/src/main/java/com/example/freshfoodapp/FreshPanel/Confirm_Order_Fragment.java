@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -18,8 +18,9 @@ import com.example.freshfoodapp.R;
 import java.util.ArrayList;
 
 public class Confirm_Order_Fragment extends Fragment {
-    private  String btnstt="Xem sản phẩm";
+    private  String mfragment ="confirm";
     Button btn;
+    private Fragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,16 +36,22 @@ public class Confirm_Order_Fragment extends Fragment {
         ListView listViewOrder = view.findViewById(R.id.listorder_confirm);
         ArrayList<OrderList> listOrder = new ArrayList<>();
         listOrder = new ArrayList<>();
+        listOrder = new ArrayList<>();
 
 //        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(container.getContext(), R.layout.order_view, listOrder);
-        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(requireContext() , R.layout.order_view, listOrder, btnstt);
+        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(requireContext() , R.layout.order_view, listOrder, mfragment);
         listViewOrder.setAdapter(orderListViewAdapter);
         if(!listOrder.isEmpty())
         {
-            TextView myTextView = view.findViewById(R.id.textview1);
-            myTextView.setVisibility(View.GONE);
+
+            LinearLayout checkorder = view.findViewById(R.id.empty_order);
+            checkorder.setVisibility(View.GONE);
         }
         return view;
 
+    }
+    public  void abc()
+    {
+        Toast.makeText(getActivity()    , "confirm", Toast.LENGTH_SHORT).show();
     }
 }
