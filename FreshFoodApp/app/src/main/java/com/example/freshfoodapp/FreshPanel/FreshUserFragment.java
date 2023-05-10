@@ -8,11 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.freshfoodapp.BottomNavigationActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.freshfoodapp.API.APIService;
@@ -43,7 +49,12 @@ public class FreshUserFragment extends Fragment {
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
     private LinearLayout btn_profile;
+
+    FreshLoveFragment freshLoveFragment = new FreshLoveFragment();
+    private LinearLayout btn_love;
+
     TextView txtName;
+
     private View v;
     FreshUserFragment context=this;
     LinearLayout btnLogout;
@@ -60,6 +71,19 @@ public class FreshUserFragment extends Fragment {
                 startActivity(new Intent(getActivity(), ProfileActivity.class));
             }
         });
+
+        btn_love.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+        return v;
+    }
+
+    private void Mapping(){
+        btn_profile = v.findViewById(R.id.btn_profile_user);
+        btn_love = v.findViewById(R.id.btn_love);
+
         getUser();
 
         //logut with google
@@ -73,7 +97,6 @@ public class FreshUserFragment extends Fragment {
             }
         });
 
-        return v;
     }
 
     void checkout(){
@@ -107,11 +130,11 @@ public class FreshUserFragment extends Fragment {
         txtName.setText(user.getName().toString());
         userId = user.getId();
     }
-    private void Mapping(){
-        btn_profile = v.findViewById(R.id.btn_profile_user);
-        txtName = v.findViewById(R.id.fr_user_name);
-        btnLogout = v.findViewById(R.id.btn_freuser_logout);
-    }
+//    private void Mapping(){
+//        btn_profile = v.findViewById(R.id.btn_profile_user);
+//        txtName = v.findViewById(R.id.fr_user_name);
+//        btnLogout = v.findViewById(R.id.btn_freuser_logout);
+//    }
     void logoutWithGoogle(){
         googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -121,5 +144,6 @@ public class FreshUserFragment extends Fragment {
         });
 
         SharedPrefManager.getInstance(this.getContext()).logout();
+
     }
 }
