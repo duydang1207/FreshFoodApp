@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.freshfoodapp.API.APIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Models.User;
@@ -51,7 +52,12 @@ public class ProfileActivity extends AppCompatActivity {
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                startActivity(new Intent(ProfileActivity.this, UploadAvatarActivity.class));
+            }
+        });
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 startActivity(new Intent(ProfileActivity.this, UploadAvatarActivity.class));
             }
         });
@@ -91,8 +97,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
     void getUser(){
         User user = SharedPrefManager.getInstance(context).getUser();
-        name.setText(user.getName().toString());
-        email.setText(user.getEmail().toString());
+        name.setText(user.getName());
+        email.setText(user.getEmail());
         Glide.with(context).load(user.getAvatar()).into(imgAvatar);
     }
     void Mapping(){
