@@ -14,8 +14,8 @@ import com.example.freshfoodapp.FreshPanel.FreshHomeFragment;
 import com.example.freshfoodapp.FreshPanel.FreshNotificationFragment;
 import com.example.freshfoodapp.FreshPanel.FreshLoveFragment;
 import com.example.freshfoodapp.FreshPanel.FreshUserFragment;
-import com.example.freshfoodapp.FreshPanel.ViewPagerAdapter;
 import com.example.freshfoodapp.Entity.CartEntity;
+import com.example.freshfoodapp.FreshPanel.ViewPagerAdapter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -26,7 +26,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
 
     private ViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
     FreshHomeFragment homeFragment = new FreshHomeFragment();
 //    FreshCartFragment cartFragment = new FreshCartFragment();
     FreshNotificationFragment notifyFragment = new FreshNotificationFragment();
@@ -53,7 +52,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         //View pager
         viewPager = findViewById(R.id.view_pager);
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         //add fragment
         viewPagerAdapter.add(new FreshHomeFragment());
         viewPagerAdapter.add(new FreshLoveFragment());

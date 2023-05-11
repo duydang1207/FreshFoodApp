@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
@@ -29,6 +30,9 @@ import com.example.freshfoodapp.LoginActivity;
 import com.example.freshfoodapp.Models.ProductQuantity;
 import com.example.freshfoodapp.Models.ResponseObject;
 import com.example.freshfoodapp.Models.User;
+import com.example.freshfoodapp.OrderActivity;
+import com.example.freshfoodapp.OrderListActivity;
+import com.example.freshfoodapp.ProductDetailActivity;
 import com.example.freshfoodapp.ProfileActivity;
 import com.example.freshfoodapp.R;
 import com.example.freshfoodapp.SharedPrefManager;
@@ -49,15 +53,15 @@ public class FreshUserFragment extends Fragment {
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
     private LinearLayout btn_profile;
-
-    FreshLoveFragment freshLoveFragment = new FreshLoveFragment();
     private LinearLayout btn_love;
 
     TextView txtName;
+    ImageView avatar;
 
     private View v;
     FreshUserFragment context=this;
-    LinearLayout btnLogout;
+    LinearLayout btnLogout, list_order, list_order_confirm, list_order_delivery ,list_order_received;
+
     Long userId;
 
     @Nullable
@@ -69,6 +73,24 @@ public class FreshUserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), ProfileActivity.class));
+            }
+        });
+        list_order_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                list_order(0);
+            }
+        });
+        list_order_delivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                list_order(1);
+            }
+        });
+        list_order_received.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                list_order(2);
             }
         });
 
@@ -83,6 +105,14 @@ public class FreshUserFragment extends Fragment {
     private void Mapping(){
         btn_profile = v.findViewById(R.id.btn_profile_user);
         btn_love = v.findViewById(R.id.btn_love);
+        txtName = v.findViewById(R.id.fr_user_name);
+        btnLogout = v.findViewById(R.id.btn_freuser_logout);
+        avatar = v.findViewById(R.id.iv_fresuser_avatar);
+
+        list_order = v.findViewById(R.id.list_order);
+        list_order_confirm= v.findViewById(R.id.list_order_confirm);
+        list_order_delivery = v.findViewById(R.id.list_order_delivery);
+        list_order_received= v.findViewById(R.id.list_order_received);
 
         getUser();
 
@@ -129,12 +159,9 @@ public class FreshUserFragment extends Fragment {
         User user = SharedPrefManager.getInstance(context.getContext()).getUser();
         txtName.setText(user.getName().toString());
         userId = user.getId();
+        Glide.with(context).load(user.getAvatar()).into(avatar);
     }
-//    private void Mapping(){
-//        btn_profile = v.findViewById(R.id.btn_profile_user);
-//        txtName = v.findViewById(R.id.fr_user_name);
-//        btnLogout = v.findViewById(R.id.btn_freuser_logout);
-//    }
+
     void logoutWithGoogle(){
         googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -145,5 +172,10 @@ public class FreshUserFragment extends Fragment {
 
         SharedPrefManager.getInstance(this.getContext()).logout();
 
+    }
+    void list_order(int fragment){
+        Intent intent = new Intent(requireContext(), OrderListActivity.class);
+        intent.putExtra("fragment", fragment);
+        context.startActivity(intent);
     }
 }

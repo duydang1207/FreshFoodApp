@@ -27,6 +27,7 @@ import com.example.freshfoodapp.Adapter.CategoryAdapter;
 import com.example.freshfoodapp.Adapter.ProductSoldCategoryAdapter;
 import com.example.freshfoodapp.CartActivity;
 import com.example.freshfoodapp.Domain.CategoryDomain;
+import com.example.freshfoodapp.GetProductActivity;
 import com.example.freshfoodapp.Models.Product;
 import com.example.freshfoodapp.Models.User;
 import com.example.freshfoodapp.ProfileActivity;
@@ -53,13 +54,29 @@ public class FreshHomeFragment extends Fragment {
     private List<Product> products;
     private ProductSoldCategoryAdapter productSoldAdapter;
 
-    TextView name;
+    TextView name, btnCateMore, btnProductMore;
     CircleImageView img;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         v = inflater.inflate(R.layout.activity_home_page, container, false);
+
+        btnCateMore = v.findViewById(R.id.btn__homepage_catemore);
+        btnProductMore = v.findViewById(R.id.btn_homepage_productmore);
+
+        btnCateMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), GetProductActivity.class));
+            }
+        });
+        btnProductMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), GetProductActivity.class));
+            }
+        });
 
         recycleViewCategory();
         recycleViewTrending();
