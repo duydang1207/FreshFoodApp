@@ -1,10 +1,7 @@
 package com.example.freshfoodapp.Adapter;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,32 +11,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
-import com.bumptech.glide.Glide;
-import com.example.freshfoodapp.FreshPanel.Cancelled_Order_Fragment;
-import com.example.freshfoodapp.FreshPanel.Confirm_Order_Fragment;
-import com.example.freshfoodapp.FreshPanel.Delivering_Order_Fragment;
-import com.example.freshfoodapp.FreshPanel.Received_Order_Fragment;
-import com.example.freshfoodapp.LoginActivity;
-import com.example.freshfoodapp.Models.OrderList;
-import com.example.freshfoodapp.OrderListActivity;
-import com.example.freshfoodapp.ProductDetailActivity;
+import com.example.freshfoodapp.Models.OrderStatus;
 import com.example.freshfoodapp.R;
-import com.example.freshfoodapp.SignUpActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderListViewAdapter extends BaseAdapter {
     private final String mfragment;
+    private final List<OrderStatus> orders;
     private Context context;
     private int layout;
-    private List<OrderList> orders;
 
 
 
-    public OrderListViewAdapter(Context context, int layout , ArrayList<OrderList> orders, String mfragment) {
+    public OrderListViewAdapter(Context context, int layout , List<OrderStatus> orders, String mfragment) {
         this.context = context;
         this.orders = orders;
         this.layout = layout;
@@ -59,7 +44,7 @@ public class OrderListViewAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return orders.get(i).getOrder_id();
+        return 0;
     }
 
     @SuppressLint("DefaultLocale")
@@ -70,7 +55,7 @@ public class OrderListViewAdapter extends BaseAdapter {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(layout,null);
 
-        OrderList order = (OrderList) getItem(i);
+        OrderStatus order = (OrderStatus) getItem(i);
         TextView textName = (TextView) view.findViewById(R.id.name_Product);
         TextView textPrice = (TextView) view.findViewById(R.id.price_Product);
         TextView textQuantity = (TextView) view.findViewById(R.id.quantity);
@@ -78,10 +63,10 @@ public class OrderListViewAdapter extends BaseAdapter {
         ImageView image = view.findViewById(R.id.image_product);
         Button btn = view.findViewById(R.id.btn_order_list);
 
-        textName.setText(order.getName_product());
-        textPrice.setText(String.valueOf("Giá: " +order.getPrice_product()));
-        textQuantity.setText(String.valueOf("Số lượng: "+ order.getQuantity()));
-        textTotal.setText(String.valueOf("Tổng: "+ order.getTotal_price()));
+        textName.setText(order.getAddress());
+        textPrice.setText(String.valueOf("Giá: " +order.getId()));
+        textQuantity.setText(String.valueOf("Số lượng: "+ order.getPaymentComplete()));
+        textTotal.setText(String.valueOf("Tổng: "+ order.getPaymentComplete()));
         switch (mfragment) {
             case "confirm":
                 btn.setText("Xem sản phẩm");
@@ -96,8 +81,8 @@ public class OrderListViewAdapter extends BaseAdapter {
                 btn.setText("Chi tiết hủy");
                 break;
         }
-        Glide.with(context).load(order.getImage_product()).into(image);
-        image.setScaleType(ImageView.ScaleType.FIT_XY);
+//        Glide.with(context).load(order.getImage_product()).into(image);
+//        image.setScaleType(ImageView.ScaleType.FIT_XY);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

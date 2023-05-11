@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".FreshPanel.Confirm_Order_Fragment">
+    tools:context=".FreshPanel.Order_Fragment">
     <ListView
         android:id="@+id/listorder_confirm"
         android:layout_width="match_parent"

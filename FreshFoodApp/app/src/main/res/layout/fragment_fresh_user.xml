@@ -66,7 +66,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/list_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
@@ -77,6 +77,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/btn_profile_user">
 
                 <LinearLayout
+                    android:id="@+id/list_order_confirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
@@ -90,18 +91,19 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/ordered" />
+                        app:srcCompat="@drawable/confirmation" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Đã đặt"
+                        android:text="Chờ xác nhận"
                         android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/list_order_delivery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
@@ -126,6 +128,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/list_order_received"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
@@ -139,7 +142,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/order_history" />
+                        app:srcCompat="@drawable/received" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -343,6 +346,36 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/gabriela"
                         android:text="Thông tin về chúng tôi"
+                        android:textColor="#404040"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_freuser_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_layout"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        app:srcCompat="@drawable/ic_logout" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="17dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/gabriela"
+                        android:text="Đăng xuất"
                         android:textColor="#404040"
                         android:textSize="16sp"
                         android:textStyle="bold" />

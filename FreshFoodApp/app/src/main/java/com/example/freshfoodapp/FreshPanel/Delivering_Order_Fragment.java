@@ -10,42 +10,57 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.freshfoodapp.API.OrderAPIService;
+import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.OrderListViewAdapter;
+import com.example.freshfoodapp.Adapter.OrderStatusAdapter;
 import com.example.freshfoodapp.Models.OrderList;
+import com.example.freshfoodapp.Models.OrderStatus;
+import com.example.freshfoodapp.Models.Orders;
+import com.example.freshfoodapp.Models.User;
 import com.example.freshfoodapp.R;
+import com.example.freshfoodapp.SharedPrefManager;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class Delivering_Order_Fragment extends Fragment {
-    private String mfragment ="delivering";
-    Button btn;
-    private Fragment fragment;
+    List<Orders> listOrder = new ArrayList<>();
+    OrderAPIService orderAPIService = RetrofitClient.getRetrofit().create(OrderAPIService.class);
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_order, container, false);
         ListView listViewOrder = view.findViewById(R.id.listorder_confirm);
-        ArrayList<OrderList> listOrder = new ArrayList<>();
-        listOrder.add(new OrderList(1, 1000, "https://cdn.tgdd.vn/Products/Images/8139/304177/bhx/bo-xay-fohla-250g-202303251515163566.jpg", "Bò xay Fohla 250g", 1000, 1 ));
-        listOrder.add(new OrderList(2, 1000, "https://cdn.tgdd.vn/Products/Images/8781/242942/bhx/thit-heo-xay-khay-500g-202111262116093264.jpg", "Thịt heo xay C.P 500g", 1000, 1 ));
-        listOrder.add(new OrderList(1, 1000, "https://cdn.tgdd.vn/Products/Images/8139/304177/bhx/bo-xay-fohla-250g-202303251515163566.jpg", "Bò xay Fohla 250g", 1000, 1  ));
-        listOrder.add(new OrderList(2, 1000, "https://cdn.tgdd.vn/Products/Images/8781/242942/bhx/thit-heo-xay-khay-500g-202111262116093264.jpg", "Thịt heo xay C.P 500g", 1000, 1 ));
 
-        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(requireContext() , R.layout.order_view, listOrder, mfragment);
-        listViewOrder.setAdapter(orderListViewAdapter);
-        if(!listOrder.isEmpty())
-        {
-            LinearLayout checkorder = view.findViewById(R.id.empty_order);
-            checkorder.setVisibility(View.GONE);
-        }
 
+        User user = SharedPrefManager.getInstance(getContext()).getUser();
+        orderAPIService.getOrder(user.getId(),1).enqueue(new Callback<List<Orders>>() {
+            @Override
+            public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
+                listOrder = response.body();
+                OrderStatusAdapter orderListViewAdapter = new OrderStatusAdapter(requireContext() , R.layout.order_id, listOrder);
+                listViewOrder.setAdapter(orderListViewAdapter);
+                if(!listOrder.isEmpty())
+                {
+
+                    LinearLayout checkorder = view.findViewById(R.id.empty_order);
+                    checkorder.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Orders>> call, Throwable t) {
+            }
+        });
         return view;
     }
 }

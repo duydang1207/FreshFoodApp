@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.freshfoodapp.API.OrderAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
-import com.example.freshfoodapp.Adapter.OrderListViewAdapter;
 import com.example.freshfoodapp.Adapter.OrderStatusAdapter;
-import com.example.freshfoodapp.Models.OrderList;
-import com.example.freshfoodapp.Models.OrderStatus;
 import com.example.freshfoodapp.Models.Orders;
 import com.example.freshfoodapp.Models.User;
 import com.example.freshfoodapp.R;
@@ -27,9 +24,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Received_Order_Fragment extends Fragment {
+public class Order_Fragment extends Fragment {
+    private final int position;
     List<Orders> listOrder = new ArrayList<>();
     OrderAPIService orderAPIService = RetrofitClient.getRetrofit().create(OrderAPIService.class);
+
+    public Order_Fragment(int position) {
+        this.position = position;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,7 @@ public class Received_Order_Fragment extends Fragment {
 
 
         User user = SharedPrefManager.getInstance(getContext()).getUser();
-        orderAPIService.getOrder(user.getId(),2).enqueue(new Callback<List<Orders>>() {
+        orderAPIService.getOrder(user.getId(),position).enqueue(new Callback<List<Orders>>() {
             @Override
             public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
                 listOrder = response.body();

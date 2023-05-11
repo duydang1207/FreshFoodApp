@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.freshfoodapp.API.APIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Models.User;
@@ -26,9 +27,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
-
-    GoogleSignInOptions googleSignInOptions;
-    GoogleSignInClient googleSignInClient;
     Button btnLogout, btnChangePass;
     ImageView imgAvatar, btn_back;
 
@@ -46,16 +44,8 @@ public class ProfileActivity extends AppCompatActivity {
         name.setEnabled(false);
         email.setEnabled(false);
 
+        getUser();
 
-        //logut with google
-        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logoutWithGoogle();
-            }
-        });
 
         //click avatar
         imgAvatar.setOnClickListener(new View.OnClickListener() {
@@ -99,16 +89,11 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
     }
-    void logoutWithGoogle(){
-        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                finish();
-                startActivity(new Intent(ProfileActivity.this,LoginActivity.class));
-            }
-        });
-
-        SharedPrefManager.getInstance(getApplicationContext()).logout();
+    void getUser(){
+        User user = SharedPrefManager.getInstance(context).getUser();
+        name.setText(user.getName().toString());
+        email.setText(user.getEmail().toString());
+        Glide.with(context).load(user.getAvatar()).into(imgAvatar);
     }
     void Mapping(){
         name = findViewById(R.id.et_profile_name);

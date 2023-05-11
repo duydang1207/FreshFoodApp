@@ -10,41 +10,56 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.freshfoodapp.API.OrderAPIService;
+import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.OrderListViewAdapter;
+import com.example.freshfoodapp.Adapter.OrderStatusAdapter;
 import com.example.freshfoodapp.Models.OrderList;
+import com.example.freshfoodapp.Models.OrderStatus;
+import com.example.freshfoodapp.Models.Orders;
+import com.example.freshfoodapp.Models.User;
 import com.example.freshfoodapp.R;
+import com.example.freshfoodapp.SharedPrefManager;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Cancelled_Order_Fragment extends Fragment {
-    private  String mframent="cancelled";
-    private Fragment fragment;
+    List<Orders> listOrder = new ArrayList<>();
+    OrderAPIService orderAPIService = RetrofitClient.getRetrofit().create(OrderAPIService.class);
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_order, container, false);
         ListView listViewOrder = view.findViewById(R.id.listorder_confirm);
-        ArrayList<OrderList> listOrder = new ArrayList<>();
-        listOrder = new ArrayList<>();
-        listOrder.add(new OrderList(1, 1000, "https://cdn.tgdd.vn/Products/Images/8788/275711/bhx/quyt-giong-uc-tui-1kg-5-9-trai-202205130905285767.jpg", "Quýt giống Úc ", 100000, 1 ));
-        listOrder.add(new OrderList(2, 1000, "https://cdn.tgdd.vn/Products/Images/8782/273937/bhx/muc-ong-nguyen-con-khay-500g-10-13-con-202303010858110302.jpg", "Mực ống nguyên con", 25000, 1));
-        listOrder.add(new OrderList(2, 1000, "https://cdn.tgdd.vn/Products/Images/8782/291428/bhx/ca-chim-trang-bien-nguyen-con-lam-sach-400g-600g-202303311326435364.jpg", "Cá chim trắng biển nguyên con làm sạch", 50000, 1 ));
 
 
-//        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(container.getContext(), R.layout.order_view, listOrder);
-        OrderListViewAdapter orderListViewAdapter = new OrderListViewAdapter(requireContext() , R.layout.order_view, listOrder, mframent);
-        listViewOrder.setAdapter(orderListViewAdapter);
-        if(!listOrder.isEmpty())
-        {
-            LinearLayout checkorder = view.findViewById(R.id.empty_order);
-            checkorder.setVisibility(View.GONE);
-        }
+        User user = SharedPrefManager.getInstance(getContext()).getUser();
+        orderAPIService.getOrder(user.getId(),3).enqueue(new Callback<List<Orders>>() {
+            @Override
+            public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
+                listOrder = response.body();
+                OrderStatusAdapter orderListViewAdapter = new OrderStatusAdapter(requireContext() , R.layout.order_id, listOrder);
+                listViewOrder.setAdapter(orderListViewAdapter);
+                if(!listOrder.isEmpty())
+                {
+
+                    LinearLayout checkorder = view.findViewById(R.id.empty_order);
+                    checkorder.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Orders>> call, Throwable t) {
+            }
+        });
         return view;
     }
 }

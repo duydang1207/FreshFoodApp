@@ -1,5 +1,4 @@
 package com.example.freshfoodapp.FreshPanel;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
