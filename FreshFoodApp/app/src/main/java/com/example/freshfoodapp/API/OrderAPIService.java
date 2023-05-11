@@ -19,4 +19,8 @@ public interface OrderAPIService {
     @PUT("order/new/{status}/{orderId}")
     Call<Orders> updateStatus(@Path("status") int status, @Path("orderId") Long orderId);
 
+
+    @GET("order/admin/{status}")
+    Call<List<Orders>> getOrderAdminByStatus(@Path("status") int status);
+
 }
