@@ -3,6 +3,7 @@ package com.example.freshfoodapp.Models;
 public class OrderItem {
     Long id;
     Orders orders;
+
     Inventory inventory;
     int quantity;
 
