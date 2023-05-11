@@ -103,6 +103,8 @@ public class OrderStatusAdminAdapter extends BaseAdapter {
                 recyclerView.setLayoutManager(gridLayoutManager);
                 time.setText(String.valueOf(order.getPaymentComplete()));
                 total_price.setText(String.valueOf(order.getTotal_price()));
+                address.setText(String.valueOf(order.getAddress()));
+                phone.setText(String.valueOf(order.getPhone()));
 
                 switch (order.getStatus()) {
                     case 0:
