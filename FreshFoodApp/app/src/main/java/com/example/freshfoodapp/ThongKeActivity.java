@@ -10,13 +10,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.freshfoodapp.API.RetrofitClient;
+import com.example.freshfoodapp.API.StatisticAPIService;
+import com.example.freshfoodapp.Models.Orders;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ThongKeActivity extends AppCompatActivity {
 
     private Spinner spnMonthDonHang, spnMonthDoanhThu, spnMonthSanPham, spnMonthHuy;
-    private TextView tvDonHang;
+    private TextView tvDonHang, tvDoanhThu, tvSanPham;
+
+    StatisticAPIService apiService = RetrofitClient.getRetrofit().create(StatisticAPIService.class);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +101,22 @@ public class ThongKeActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String monthClick = spnMonthDonHang.getSelectedItem().toString();
+                apiService.getOrderMonth(Integer.parseInt(monthClick)).enqueue(new Callback<List<Orders>>() {
+                    @Override
+                    public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
+                        List<Orders> orders = response.body();
+                        int sl = orders.size();
 
-                String slDonHang = "50";
-                String tvDonHangTemp = "Tổng đơn hàng của tháng " + monthClick + " là: " + slDonHang;
-//                tvDonHang.setText((CharSequence) tvDonHang);
-                Toast.makeText(ThongKeActivity.this, tvDonHangTemp, Toast.LENGTH_SHORT).show();
+                        String tvDonHangTemp = "Tổng đơn hàng của tháng " + monthClick + " là: " + sl;
+                        tvDonHang.setText(tvDonHangTemp);
+                        Toast.makeText(ThongKeActivity.this, tvDonHangTemp, Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onFailure(Call<List<Orders>> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override
@@ -115,11 +135,19 @@ public class ThongKeActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String monthClick = spnMonthDoanhThu.getSelectedItem().toString();
 
-                String slDonHang = "50";
-                String tvDonHangTemp = "Tổng doanh thu của tháng " + monthClick + " là: " + slDonHang;
-//                tvDonHang.setText((CharSequence) tvDonHang);
-                Toast.makeText(ThongKeActivity.this, tvDonHangTemp, Toast.LENGTH_SHORT).show();
+                apiService.getRevenueMonth(Integer.parseInt(monthClick)).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String tvDonHangTemp = "Tổng doanh thu của tháng " + monthClick + " là: " + response.body();
+                        tvDoanhThu.setText(("Tổng doanh thu của tháng " + monthClick + " là: " + response.body()+" VND"));
+                        Toast.makeText(ThongKeActivity.this, tvDonHangTemp, Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override
@@ -130,6 +158,8 @@ public class ThongKeActivity extends AppCompatActivity {
     }
     private void Mapping(){
         tvDonHang = findViewById(R.id.tv_donhang);
+        tvDoanhThu = findViewById(R.id.tv_doanhthu);
+        tvSanPham = findViewById(R.id.tv_sanpham);
         spnMonthDonHang = (Spinner) findViewById(R.id.spnMonthDonHang);
         spnMonthDoanhThu = (Spinner) findViewById(R.id.spnMonthDoanhThu);
         spnMonthSanPham = (Spinner) findViewById(R.id.spnMonthSanPham);
