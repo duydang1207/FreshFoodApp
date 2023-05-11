@@ -26,6 +26,9 @@
             android:name=".OrderListActivity"
             android:exported="true"></activity>
         <activity
+            android:name=".GetProductActivity"
+            android:exported="true"></activity>
+        <activity
             android:name=".BottomNavigationActivity"
             android:exported="true"/>
         <activity

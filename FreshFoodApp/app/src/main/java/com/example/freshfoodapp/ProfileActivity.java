@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.freshfoodapp.API.APIService;
 import com.example.freshfoodapp.API.RetrofitClient;
+import com.example.freshfoodapp.Models.ResponseObject;
 import com.example.freshfoodapp.Models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,8 +28,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
-    Button btnLogout, btnChangePass;
-    ImageView imgAvatar, btn_back;
+
+    ImageView imgAvatar, btn_back, btnChangePass, btnEdit, btnChange;
 
     EditText name, email;
     Context context = this;
@@ -43,6 +44,53 @@ public class ProfileActivity extends AppCompatActivity {
         //block edit text
         name.setEnabled(false);
         email.setEnabled(false);
+        btnChange.setEnabled(false);
+        btnChange.layout(0,0,0,0);
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                name.setEnabled(true);
+                email.setEnabled(true);
+                btnChange.setEnabled(true);
+                btnEdit.setEnabled(false);
+            }
+        });
+
+        btnChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Long id = SharedPrefManager.getInstance(getApplicationContext()).getUser().getId();
+                String nameNew = name.getText().toString();
+                String emailNew = email.getText().toString();
+                apiService.changeProfile(id, nameNew, emailNew).enqueue(new Callback<ResponseObject>() {
+                    @Override
+                    public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                        if(response.isSuccessful()){
+                            User usernew = SharedPrefManager.getInstance(getApplicationContext()).getUser();
+                            usernew.setName(nameNew);
+                            usernew.setEmail(emailNew);
+                            SharedPrefManager.getInstance(getApplicationContext()).userLogin(usernew);
+
+                            name.setEnabled(false);
+                            email.setEnabled(false);
+                            btnChange.setEnabled(false);
+                            btnEdit.setEnabled(true);
+
+                            Toast.makeText(getApplicationContext(),"Thay đổi thông tin thành công", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(),"Không thể thay đổi thông tin do email đã tồn tại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseObject> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
 
         getUser();
 
@@ -98,10 +146,11 @@ public class ProfileActivity extends AppCompatActivity {
     void Mapping(){
         name = findViewById(R.id.et_profile_name);
         email = findViewById(R.id.et_proflie_email);
-        btnLogout = findViewById(R.id.btn_profile_logout);
         imgAvatar = findViewById(R.id.iv_profile_avatar);
         btn_back = findViewById(R.id.btn_proflie_back);
         btnChangePass = findViewById(R.id.btn_profile_changepassword);
+        btnEdit = findViewById(R.id.btn_profile_edit);
+        btnChange = findViewById(R.id.btn_profile_change);
 
     }
 }
