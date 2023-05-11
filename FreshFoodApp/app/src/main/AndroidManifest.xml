@@ -30,6 +30,7 @@
         <activity
             android:name=".OrderListActivity"
             android:exported="true">
+
         </activity>
 
         <activity
@@ -52,35 +53,39 @@
             </intent-filter>
         </activity>
         <activity
-    android:name=".OrderActivity"
-    android:exported="false" />
+            android:name=".OrderActivity"
+            android:exported="true" />
+        <activity
+            android:name=".OrderListActivity"
+            android:exported="true" />
 
-    <activity
-        android:name=".ResetPasswordActivity"
-        android:exported="true" />
-    <activity
-        android:name=".CartActivity"
-        android:exported="true" />
-    <activity
-        android:name=".UploadAvatarActivity"
-        android:exported="false" />
-
-
-    <activity
-        android:name=".SignUpActivity"
-        android:exported="false" />
-    <activity
-        android:name=".MainActivity"
-        android:exported="false" />
-    <activity
-        android:name=".HomePageActivity"
-        android:exported="true" />
-    <activity
-        android:name=".ProfileActivity"
-        android:exported="false" />
-    <activity
-        android:name=".ProductOfCategoryActivity"
-        android:exported="false" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UploadAvatarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomePageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductOfCategoryActivity"
+            android:exported="false" />
 
     <meta-data
         android:name="preloaded_fonts"

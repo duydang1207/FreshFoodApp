@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -23,10 +25,12 @@ import com.example.freshfoodapp.API.ProductAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.CategoryAdapter;
 import com.example.freshfoodapp.Adapter.ProductSoldCategoryAdapter;
+import com.example.freshfoodapp.CartActivity;
 import com.example.freshfoodapp.Domain.CategoryDomain;
 import com.example.freshfoodapp.GetProductActivity;
 import com.example.freshfoodapp.Models.Product;
 import com.example.freshfoodapp.Models.User;
+import com.example.freshfoodapp.ProfileActivity;
 import com.example.freshfoodapp.R;
 import com.example.freshfoodapp.SharedPrefManager;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -44,6 +48,7 @@ public class FreshHomeFragment extends Fragment {
     private ViewFlipper viewFlipper;
     private RecyclerView rvCateList, rvProTrend;
     private RecyclerView.Adapter adapter;
+    private ImageView btnCart;
     private View v;
     private ProductAPIService productAPIService;
     private List<Product> products;
@@ -76,6 +81,13 @@ public class FreshHomeFragment extends Fragment {
         recycleViewCategory();
         recycleViewTrending();
         viewFlipper = v.findViewById(R.id.vf_homepage_imgFlipper);
+        btnCart = v.findViewById(R.id.btn_cart);
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), CartActivity.class));
+            }
+        });
 
         viewFiliper();
         getUser();
