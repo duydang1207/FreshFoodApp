@@ -10,10 +10,6 @@
         android:title="Yêu thích"
         android:icon="@drawable/heart" />
 
-    <item android:id="@+id/freshCart"
-        android:title="Giỏ hàng"
-        android:icon="@drawable/cart" />
-
     <item android:id="@+id/freshNotification"
         android:title="Thông báo"
         android:icon="@drawable/notification" />
