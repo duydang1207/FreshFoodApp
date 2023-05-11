@@ -15,21 +15,25 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.freshfoodapp.API.OrderAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Models.OrderItem;
-import com.example.freshfoodapp.Models.OrderList;
 import com.example.freshfoodapp.Models.Orders;
 import com.example.freshfoodapp.OrderListActivity;
 import com.example.freshfoodapp.OrderListAdminActivity;
-import com.example.freshfoodapp.R;;
+import com.example.freshfoodapp.R;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderStatusAdapter extends BaseAdapter {
+;
+
+public class OrderStatusAdminAdapter extends BaseAdapter {
     private final List<Orders> orders;
     private Context context;
     private int layout;
@@ -47,7 +51,7 @@ public class OrderStatusAdapter extends BaseAdapter {
     String confirmation_question = "", confirmation_question2 = "";
     int status_change, status_change2;
 
-    public OrderStatusAdapter(Context context, int layout , List<Orders> orders) {
+    public OrderStatusAdminAdapter(Context context, int layout, List<Orders> orders) {
         this.context = context;
         this.orders = orders;
         this.layout = layout;
@@ -56,7 +60,7 @@ public class OrderStatusAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return orders==null?0:orders.size();
+        return orders == null ? 0 : orders.size();
     }
 
     @Override
@@ -75,7 +79,7 @@ public class OrderStatusAdapter extends BaseAdapter {
         //lấy context
         LayoutInflater inflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(layout,null);
+        view = inflater.inflate(layout, null);
         Orders order = (Orders) getItem(i);
 
         View finalView = view;
@@ -83,7 +87,7 @@ public class OrderStatusAdapter extends BaseAdapter {
             @Override
             public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {
                 time = finalView.findViewById(R.id.time_buy);
-                address =  finalView.findViewById(R.id.address);
+                address = finalView.findViewById(R.id.address);
                 phone = finalView.findViewById(R.id.phone);
                 status = finalView.findViewById(R.id.status);
                 total_price = finalView.findViewById(R.id.total_price);
@@ -99,18 +103,24 @@ public class OrderStatusAdapter extends BaseAdapter {
                 recyclerView.setLayoutManager(gridLayoutManager);
                 time.setText(String.valueOf(order.getPaymentComplete()));
                 total_price.setText(String.valueOf(order.getTotal_price()));
+
                 switch (order.getStatus()) {
                     case 0:
                         status.setText("Chờ xác nhận");
+                        btn_update_status.setText("Xác nhận");
                         btn_update_status2.setText("Hủy đơn hàng");
-                        confirmation_question2 = "Bạn có chắc chắn muốn xóa không?";
-                        btn_update_status.setVisibility(finalView.INVISIBLE);
+                        confirmation_question = "Xác nhận giao đơn hàng";
+                        confirmation_question2 = "Bạn muốn hủy đơn hàng này không?";
+                        status_change = 1;
                         status_change2 = 3;
                         break;
                     case 1:
                         status.setText("Đang giao");
-                        btn_update_status.setVisibility(finalView.INVISIBLE);
-                        btn_update_status2.setVisibility(finalView.INVISIBLE);
+                        btn_update_status.setText("Đã giao");
+                        btn_update_status2.setText("Hủy đơn hàng");
+                        confirmation_question = "Xác nhận đã giao";
+                        confirmation_question2 = "Bạn muốn hủy đơn hàng này không?";
+                        status_change = 2;
                         break;
                     case 2:
                         status.setText("Đã nhận");
@@ -119,14 +129,11 @@ public class OrderStatusAdapter extends BaseAdapter {
                         break;
                     case 3:
                         status.setText("Đã hủy");
-                        btn_update_status.setText("Mua lại");
-                        confirmation_question = "Bạn có chắc chắn muốn mua lại đơn hàng không?";
+                        btn_update_status.setVisibility(finalView.INVISIBLE);
                         btn_update_status2.setVisibility(finalView.INVISIBLE);
-                        status_change = 0;
                         break;
                 }
                 recyclerView.setAdapter(orderItemAdapter);
-
                 btn_update_status.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -142,6 +149,7 @@ public class OrderStatusAdapter extends BaseAdapter {
                     }
 
                 });
+
             }
 
             @Override
@@ -169,7 +177,7 @@ public class OrderStatusAdapter extends BaseAdapter {
 
                             }
                         });
-                        Intent intent = new Intent(context, OrderListActivity.class);
+                        Intent intent = new Intent(context, OrderListAdminActivity.class);
                         intent.putExtra("fragment", orders.getStatus());
                         context.startActivity(intent);
                     }
