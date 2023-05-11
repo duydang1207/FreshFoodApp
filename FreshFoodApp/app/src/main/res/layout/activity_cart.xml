@@ -39,7 +39,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lv_cart_products"
         android:layout_width="387dp"
-        android:layout_height="450dp"
+        android:layout_height="400dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
 

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.freshfoodapp.API.ProductAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.CategoryAdapter;
@@ -170,6 +171,6 @@ public class FreshHomeFragment extends Fragment {
         img = v.findViewById(R.id.iv_homepage_imgProfile);
 
         name.setText(user.getName());
-        Glide.with(getContext()).load(user.getAvatar()).into(img);
+        Glide.with(getActivity().getApplicationContext()).load(user.getAvatar()).into(img);
     }
 }
