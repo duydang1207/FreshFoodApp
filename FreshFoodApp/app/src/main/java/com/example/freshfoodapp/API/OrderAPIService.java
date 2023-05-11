@@ -1,16 +1,12 @@
 package com.example.freshfoodapp.API;
 
 import com.example.freshfoodapp.Models.OrderItem;
-import com.example.freshfoodapp.Models.OrderStatus;
 import com.example.freshfoodapp.Models.Orders;
-import com.example.freshfoodapp.Models.ResponseObject;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 

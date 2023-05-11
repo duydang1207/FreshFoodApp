@@ -77,7 +77,6 @@ public class CartActivity extends AppCompatActivity {
     ResponseObject<ProductQuantity> responseObject;
     ProductQuantity sendData;
     CartAdapter adapter;
-
     SwipeHelper swipeHelper;
     static TextView totalQuantity;
     CartAPIService apiService = RetrofitClient.getRetrofit().create(CartAPIService.class);
@@ -120,13 +119,14 @@ public class CartActivity extends AppCompatActivity {
                             public void onClick(int pos) {
                                 CartEntity cart = carts.get(pos);
                                 AbstractDatabase.getInstance(getApplicationContext()).cartDAO().deleteProduct(cart.getProductId());
-                                carts = AbstractDatabase.getInstance(getApplicationContext()).cartDAO().getAll();
-                                adapter = new CartAdapter(getApplicationContext(), carts);
-                                rvCart.getRecycledViewPool().clear();
-                                adapter.notifyDataSetChanged();
-                                rvCart.setAdapter(adapter);
+
+                                carts.remove(viewHolder.getAdapterPosition());
+                                adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+
 
                                 TotalPrice();
+                                Toast.makeText(getApplicationContext(), "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
+
                                 Log.e("position",String.valueOf(pos));
 //                                DeleteItem(rvCart);
                             }
@@ -136,6 +136,7 @@ public class CartActivity extends AppCompatActivity {
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeHelper);
         itemTouchHelper.attachToRecyclerView(rvCart);
+
     }
 
     void deleteProductFailed(List<Long> id){

@@ -72,7 +72,6 @@
             android:id="@+id/et_login_password"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/baseline_lock"
@@ -85,6 +84,7 @@
             android:paddingEnd="12sp"
             android:textColor="#404040"
             android:textColorHint="#A1A1A1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_login_username" />
 

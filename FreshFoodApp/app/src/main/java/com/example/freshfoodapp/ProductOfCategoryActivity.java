@@ -36,7 +36,11 @@ public class ProductOfCategoryActivity extends AppCompatActivity {
     }
     void getProductToCategoryId(){
         rvProducts = findViewById(R.id.rv_products_productall);
+        categoryName = findViewById(R.id.tv_products_categoryname);
+
         String category = getIntent().getStringExtra("catename");
+        categoryName.setText(category.toString());
+
         if(category.equals("Thịt")){
             getProduct(1L, 2L, 3L);
         } else if (category.equals("Cá")) {

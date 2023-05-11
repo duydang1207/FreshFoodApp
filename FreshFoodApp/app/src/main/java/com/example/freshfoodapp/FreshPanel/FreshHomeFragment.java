@@ -1,5 +1,6 @@
 package com.example.freshfoodapp.FreshPanel;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,11 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.freshfoodapp.API.ProductAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.CategoryAdapter;
 import com.example.freshfoodapp.Adapter.ProductSoldCategoryAdapter;
 import com.example.freshfoodapp.Domain.CategoryDomain;
+import com.example.freshfoodapp.GetProductActivity;
 import com.example.freshfoodapp.Models.Product;
 import com.example.freshfoodapp.Models.User;
 import com.example.freshfoodapp.R;
@@ -46,13 +49,29 @@ public class FreshHomeFragment extends Fragment {
     private List<Product> products;
     private ProductSoldCategoryAdapter productSoldAdapter;
 
-    TextView name;
+    TextView name, btnCateMore, btnProductMore;
     CircleImageView img;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         v = inflater.inflate(R.layout.activity_home_page, container, false);
+
+        btnCateMore = v.findViewById(R.id.btn__homepage_catemore);
+        btnProductMore = v.findViewById(R.id.btn_homepage_productmore);
+
+        btnCateMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), GetProductActivity.class));
+            }
+        });
+        btnProductMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), GetProductActivity.class));
+            }
+        });
 
         recycleViewCategory();
         recycleViewTrending();
@@ -152,6 +171,6 @@ public class FreshHomeFragment extends Fragment {
         img = v.findViewById(R.id.iv_homepage_imgProfile);
 
         name.setText(user.getName());
-        Glide.with(getContext()).load(user.getAvatar()).into(img);
+        Glide.with(getActivity().getApplicationContext()).load(user.getAvatar()).into(img);
     }
 }

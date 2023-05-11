@@ -79,9 +79,10 @@ public class LoginActivity extends AppCompatActivity {
 
         Mapping();
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
-            finish();
+
             Log.d("message", "Success");
             startActivity(new Intent(this, BottomNavigationActivity.class));
+            finish();
             return;
         }
 
@@ -205,11 +206,13 @@ public class LoginActivity extends AppCompatActivity {
                     Gson gson = new Gson();
                     user = gson.fromJson(objectUser.getData(), User.class);
                     if (user == null) {
+
                         signupGG = true;
                     } else {
                         SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
                         getCartByAccount(user.getId());
                         Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                        finish();
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
