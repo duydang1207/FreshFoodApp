@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
@@ -49,11 +50,10 @@ public class FreshUserFragment extends Fragment {
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
     private LinearLayout btn_profile;
-
-    FreshLoveFragment freshLoveFragment = new FreshLoveFragment();
     private LinearLayout btn_love;
 
     TextView txtName;
+    ImageView avatar;
 
     private View v;
     FreshUserFragment context=this;
@@ -83,6 +83,9 @@ public class FreshUserFragment extends Fragment {
     private void Mapping(){
         btn_profile = v.findViewById(R.id.btn_profile_user);
         btn_love = v.findViewById(R.id.btn_love);
+        txtName = v.findViewById(R.id.fr_user_name);
+        btnLogout = v.findViewById(R.id.btn_freuser_logout);
+        avatar = v.findViewById(R.id.iv_fresuser_avatar);
 
         getUser();
 
@@ -129,12 +132,9 @@ public class FreshUserFragment extends Fragment {
         User user = SharedPrefManager.getInstance(context.getContext()).getUser();
         txtName.setText(user.getName().toString());
         userId = user.getId();
+        Glide.with(context).load(user.getAvatar()).into(avatar);
     }
-//    private void Mapping(){
-//        btn_profile = v.findViewById(R.id.btn_profile_user);
-//        txtName = v.findViewById(R.id.fr_user_name);
-//        btnLogout = v.findViewById(R.id.btn_freuser_logout);
-//    }
+
     void logoutWithGoogle(){
         googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

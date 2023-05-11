@@ -21,4 +21,7 @@ public interface ProductAPIService {
 
     @GET("product/category/{category_id}")
     Call<List<Product>> getAllProductToCategory(@Path("category_id") Long category_id);
+
+    @GET("product")
+    Call<List<Product>> getAll();
 }

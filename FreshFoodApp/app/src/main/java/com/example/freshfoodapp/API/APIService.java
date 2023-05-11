@@ -52,4 +52,8 @@ public interface APIService {
     @GET("user/{id}")
     Call<User> getUser(@Path("id") Long id);
 
+    @FormUrlEncoded
+    @PUT("user/new")
+    Call<ResponseObject> changeProfile(@Field("id") Long id, @Field("name") String name, @Field("email") String email);
+
 }
