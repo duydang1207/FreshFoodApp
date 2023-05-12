@@ -23,7 +23,7 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Bạn vừa nhấn vào Doanh thu", Toast.LENGTH_SHORT).show();
-                Intent intent= new Intent(getApplicationContext(),ThongKeActivity.class);
+                Intent intent= new Intent(getApplicationContext(),ThongKeActivity2.class);
                 startActivity(intent);
             }
         });
