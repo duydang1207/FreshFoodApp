@@ -3,6 +3,8 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/acme</item>
         <item>@font/alef</item>
+        <item>@font/alice</item>
+        <item>@font/arimo_bold</item>
         <item>@font/gabriela</item>
         <item>@font/roboto_black</item>
         <item>@font/roboto_thin</item>
