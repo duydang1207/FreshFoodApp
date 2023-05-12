@@ -7,4 +7,7 @@
         <item name="cornerSizeBottomLeft">50dp</item>
         <item name="cornerSizeBottomRight">50dp</item>
     </style>
+    <style name="TabLayoutTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

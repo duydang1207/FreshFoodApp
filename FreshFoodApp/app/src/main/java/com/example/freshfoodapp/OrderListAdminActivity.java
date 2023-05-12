@@ -13,11 +13,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.freshfoodapp.FreshPanel.OrderAdmin_Fragment;
 import com.example.freshfoodapp.FreshPanel.Order_Fragment;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class OrderListActivity extends AppCompatActivity {
+public class OrderListAdminActivity extends AppCompatActivity {
     ImageView iv_orderList_back;
     TabLayout mTabLayout;
     ViewPager mViewPager;
@@ -62,15 +63,15 @@ public class OrderListActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new Order_Fragment(position);
+                    return new OrderAdmin_Fragment(position);
                 case 1:
-                    return new Order_Fragment(position);
+                    return new OrderAdmin_Fragment(position);
                 case 2:
-                    return new Order_Fragment(position);
+                    return new OrderAdmin_Fragment(position);
                 case 3:
-                    return new Order_Fragment(position);
+                    return new OrderAdmin_Fragment(position);
                 default:
-                    return new Order_Fragment(0);
+                    return new OrderAdmin_Fragment(0);
             }
         }
 

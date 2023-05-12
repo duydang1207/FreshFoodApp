@@ -14,8 +14,8 @@ import com.example.freshfoodapp.FreshPanel.FreshHomeFragment;
 import com.example.freshfoodapp.FreshPanel.FreshNotificationFragment;
 import com.example.freshfoodapp.FreshPanel.FreshLoveFragment;
 import com.example.freshfoodapp.FreshPanel.FreshUserFragment;
-import com.example.freshfoodapp.FreshPanel.ViewPagerAdapter;
 import com.example.freshfoodapp.Entity.CartEntity;
+import com.example.freshfoodapp.FreshPanel.ViewPagerAdapter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -26,9 +26,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
 
     private ViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
     FreshHomeFragment homeFragment = new FreshHomeFragment();
-    FreshCartFragment cartFragment = new FreshCartFragment();
+//    FreshCartFragment cartFragment = new FreshCartFragment();
     FreshNotificationFragment notifyFragment = new FreshNotificationFragment();
     FreshUserFragment userFragment = new FreshUserFragment();
     FreshLoveFragment loveFragment = new FreshLoveFragment();
@@ -42,10 +41,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         List<CartEntity> carts = AbstractDatabase.getInstance(getApplicationContext()).cartDAO().getAll();
 
-        BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.freshCart);
-        badgeDrawable.setVisible(true);
-        badgeDrawable.setNumber(carts.size());
-
 
         BadgeDrawable badgeDrawable2 = bottomNavigationView.getOrCreateBadge(R.id.freshNotification);
         badgeDrawable2.setVisible(true);
@@ -57,11 +52,11 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         //View pager
         viewPager = findViewById(R.id.view_pager);
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         //add fragment
         viewPagerAdapter.add(new FreshHomeFragment());
         viewPagerAdapter.add(new FreshLoveFragment());
-        viewPagerAdapter.add(new FreshCartFragment());
+//        viewPagerAdapter.add(new FreshCartFragment());
         viewPagerAdapter.add(new FreshNotificationFragment());
         viewPagerAdapter.add(new FreshUserFragment());
 
@@ -78,13 +73,13 @@ public class BottomNavigationActivity extends AppCompatActivity {
                     case 1:
                         bottomNavigationView.getMenu().findItem(R.id.freshLove).setChecked(true);
                         break;
+//                    case 2:
+//                        bottomNavigationView.getMenu().findItem(R.id.freshCart).setChecked(true);
+//                        break;
                     case 2:
-                        bottomNavigationView.getMenu().findItem(R.id.freshCart).setChecked(true);
-                        break;
-                    case 3:
                         bottomNavigationView.getMenu().findItem(R.id.freshNotification).setChecked(true);
                         break;
-                    case 4:
+                    case 3:
                         bottomNavigationView.getMenu().findItem(R.id.freshUser).setChecked(true);
                         break;
                 }
@@ -113,17 +108,17 @@ public class BottomNavigationActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, loveFragment).commit();
                         viewPager.setCurrentItem(1);
                         return true;
-                    case R.id.freshCart:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, cartFragment).commit();
-                        viewPager.setCurrentItem(2);
-                        return true;
+//                    case R.id.freshCart:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, cartFragment).commit();
+//                        viewPager.setCurrentItem(2);
+//                        return true;
                     case R.id.freshNotification:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notifyFragment).commit();
-                        viewPager.setCurrentItem(3);
+                        viewPager.setCurrentItem(2);
                         return true;
                     case R.id.freshUser:
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, userFragment).commit();
-                        viewPager.setCurrentItem(4);
+                        viewPager.setCurrentItem(3);
                         return true;
                 }
                 return false;
