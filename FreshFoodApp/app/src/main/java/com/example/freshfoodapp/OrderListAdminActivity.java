@@ -46,7 +46,8 @@ public class OrderListAdminActivity extends AppCompatActivity {
         iv_orderList_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BottomNavigationActivity.class);
+                finish();
+                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,6 +1,9 @@
 package com.example.freshfoodapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +29,7 @@ public class ProductOfCategoryActivity extends AppCompatActivity {
     List<Product> products = new ArrayList<>();
     public ProductAPIService productAPIService;
     ProductSoldCategoryAdapter productAdapter;
+    ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,16 @@ public class ProductOfCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_products);
         productAPIService = RetrofitClient.getRetrofit().create(ProductAPIService.class);
         getProductToCategoryId();
+
+        btnBack = (ImageView) findViewById(R.id.iv_cart_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(new Intent(getApplicationContext(), BottomNavigationActivity.class));
+            }
+        });
+
     }
     void getProductToCategoryId(){
         rvProducts = findViewById(R.id.rv_products_productall);

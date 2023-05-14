@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.freshfoodapp.API.OrderAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
+import com.example.freshfoodapp.AdminActivity;
+import com.example.freshfoodapp.FreshPanel.OrderAdmin_Fragment;
 import com.example.freshfoodapp.Models.OrderItem;
 import com.example.freshfoodapp.Models.Orders;
 import com.example.freshfoodapp.OrderListActivity;
@@ -120,9 +122,11 @@ public class OrderStatusAdminAdapter extends BaseAdapter {
                         status.setText("Đang giao");
                         btn_update_status.setText("Đã giao");
                         btn_update_status2.setText("Hủy đơn hàng");
+                        btn_update_status2.setVisibility(finalView.INVISIBLE);
                         confirmation_question = "Xác nhận đã giao";
                         confirmation_question2 = "Bạn muốn hủy đơn hàng này không?";
                         status_change = 2;
+                        status_change2 = 3;
                         break;
                     case 2:
                         status.setText("Đã nhận");
@@ -179,7 +183,8 @@ public class OrderStatusAdminAdapter extends BaseAdapter {
 
                             }
                         });
-                        Intent intent = new Intent(context, OrderListAdminActivity.class);
+
+                        Intent intent = new  Intent(new Intent(context, OrderListAdminActivity.class));
                         intent.putExtra("fragment", orders.getStatus());
                         context.startActivity(intent);
                     }

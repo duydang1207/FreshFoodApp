@@ -21,11 +21,14 @@ public class User implements Serializable {
     @SerializedName("password")
     private String password;
 
-    public User(Long id, String name, String email, String avatar) {
+    private boolean role;
+
+    public User(Long id, String name, String email, String avatar, boolean role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.avatar = avatar;
+        this.role = role;
     }
     public User() {
     }
@@ -69,5 +72,13 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isRole() {
+        return role;
+    }
+
+    public void setRole(boolean role) {
+        this.role = role;
     }
 }

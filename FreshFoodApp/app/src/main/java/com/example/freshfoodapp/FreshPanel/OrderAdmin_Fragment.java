@@ -51,7 +51,7 @@ public class OrderAdmin_Fragment extends Fragment {
                 listOrder = response.body();
                 OrderStatusAdminAdapter orderListViewAdapter = new OrderStatusAdminAdapter(requireContext() , R.layout.order_id, listOrder);
                 listViewOrder.setAdapter(orderListViewAdapter);
-                if(!listOrder.isEmpty())
+                if(listOrder!=null)
                 {
 
                     LinearLayout checkorder = view.findViewById(R.id.empty_order);
