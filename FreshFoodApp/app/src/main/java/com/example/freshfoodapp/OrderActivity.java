@@ -108,16 +108,17 @@ public class OrderActivity extends AppCompatActivity {
                 });
     }
     BigDecimal TotalPrice(){
-        BigDecimal total = BigDecimal.valueOf(0);
+        int total = 0;
         int quantity = 0;
         for(int i =0;i<listCart.size();i++)
         {
-            quantity += listCart.get(i).getQuantity();
-            total = total.add(BigDecimal.valueOf(listCart.get(i).getPrice()).multiply(BigDecimal.valueOf(quantity)));
+            quantity = listCart.get(i).getQuantity();
+            total += (BigDecimal.valueOf(listCart.get(i).getPrice()).multiply(BigDecimal.valueOf(100-listCart.get(i).getPromotion()).divide(BigDecimal.valueOf(100))).multiply(BigDecimal.valueOf(quantity))).intValue();
         }
         totalPrice.setText(String.valueOf("đ" + total));
         totalPriceMain.setText(String.valueOf("đ" + total));
-        return total;
+
+        return BigDecimal.valueOf(total);
     }
 
     void Mapping(){

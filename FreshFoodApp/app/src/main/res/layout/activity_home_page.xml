@@ -67,12 +67,22 @@
                     app:layout_constraintStart_toStartOf="@+id/tv_home1"
                     app:layout_constraintTop_toBottomOf="@+id/tv_home1" />
 
+                <ImageView
+                    android:id="@+id/btn_cart"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_homepage_imgProfile"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/trolley" />
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_homepage_imgProfile"
                     android:layout_width="60sp"
                     android:layout_height="60sp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="24dp"
                     android:src="@drawable/gd"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.999"

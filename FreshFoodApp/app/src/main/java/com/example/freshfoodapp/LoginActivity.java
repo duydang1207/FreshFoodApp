@@ -81,7 +81,13 @@ public class LoginActivity extends AppCompatActivity {
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
 
             Log.d("message", "Success");
-            startActivity(new Intent(this, BottomNavigationActivity.class));
+            User user1 = SharedPrefManager.getInstance(getApplicationContext()).getUser();
+            if (user1.isRole()){
+                startActivity(new Intent(this, AdminActivity.class));
+            }
+            else {
+                startActivity(new Intent(this, BottomNavigationActivity.class));
+            }
             finish();
             return;
         }
@@ -205,13 +211,23 @@ public class LoginActivity extends AppCompatActivity {
                     objectUser = response.body();
                     Gson gson = new Gson();
                     user = gson.fromJson(objectUser.getData(), User.class);
+                    user.setRole(false);
                     if (user == null) {
-
                         signupGG = true;
                     } else {
+                        if(objectUser.getMessage().equals("admin")){
+                            user.setRole(true);
+                        }
                         SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
                         getCartByAccount(user.getId());
-                        Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                        Intent intent;
+                        //
+                        if(user.isRole()){
+                            intent = new Intent(LoginActivity.this, AdminActivity.class);
+                        }else {
+                            intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                        }
+                        //
                         finish();
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), response.body().getMessage().toString(), Toast.LENGTH_SHORT).show();

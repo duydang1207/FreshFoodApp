@@ -1,6 +1,7 @@
 package com.example.freshfoodapp.API;
 
 import com.example.freshfoodapp.Models.Product;
+import com.example.freshfoodapp.Models.ProductQuantity;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface ProductAPIService {
 
     @GET("product")
     Call<List<Product>> getAll();
+
+
 }

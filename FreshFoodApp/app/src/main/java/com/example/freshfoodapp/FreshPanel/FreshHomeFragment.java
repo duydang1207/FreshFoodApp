@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -23,11 +26,14 @@ import com.example.freshfoodapp.API.ProductAPIService;
 import com.example.freshfoodapp.API.RetrofitClient;
 import com.example.freshfoodapp.Adapter.CategoryAdapter;
 import com.example.freshfoodapp.Adapter.ProductSoldCategoryAdapter;
+import com.example.freshfoodapp.CartActivity;
 import com.example.freshfoodapp.Domain.CategoryDomain;
 import com.example.freshfoodapp.GetProductActivity;
 import com.example.freshfoodapp.Models.Product;
 import com.example.freshfoodapp.Models.User;
+import com.example.freshfoodapp.ProfileActivity;
 import com.example.freshfoodapp.R;
+import com.example.freshfoodapp.SearchActivity;
 import com.example.freshfoodapp.SharedPrefManager;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -44,10 +50,12 @@ public class FreshHomeFragment extends Fragment {
     private ViewFlipper viewFlipper;
     private RecyclerView rvCateList, rvProTrend;
     private RecyclerView.Adapter adapter;
+    private ImageView btnCart;
     private View v;
     private ProductAPIService productAPIService;
     private List<Product> products;
     private ProductSoldCategoryAdapter productSoldAdapter;
+    EditText searchView;
 
     TextView name, btnCateMore, btnProductMore;
     CircleImageView img;
@@ -59,6 +67,14 @@ public class FreshHomeFragment extends Fragment {
 
         btnCateMore = v.findViewById(R.id.btn__homepage_catemore);
         btnProductMore = v.findViewById(R.id.btn_homepage_productmore);
+        searchView = v.findViewById(R.id.search_input_homepage);
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), SearchActivity.class));
+            }
+        });
 
         btnCateMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +92,13 @@ public class FreshHomeFragment extends Fragment {
         recycleViewCategory();
         recycleViewTrending();
         viewFlipper = v.findViewById(R.id.vf_homepage_imgFlipper);
+        btnCart = v.findViewById(R.id.btn_cart);
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), CartActivity.class));
+            }
+        });
 
         viewFiliper();
         getUser();

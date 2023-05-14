@@ -17,6 +17,7 @@ import com.example.freshfoodapp.Database.AbstractDatabase;
 import com.example.freshfoodapp.Entity.CartEntity;
 import com.example.freshfoodapp.R;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder>{
@@ -38,8 +39,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public void onBindViewHolder(@NonNull CartAdapter.CartViewHolder holder, int position) {
         CartEntity cart = cartList.get(position);
         holder.tvName.setText(cart.getName());
-        holder.tvPrice.setText(String.valueOf("$ "+cart.getPrice()));
-        holder.tvPromotion.setText(String.valueOf(cart.getPrice()*(1+(double)cart.getPromotion()/100)));
+        if(cart.getPromotion()>0){
+            BigDecimal price = BigDecimal.valueOf(cart.getPrice());
+            BigDecimal priceProduct = price.subtract(price.multiply(BigDecimal.valueOf(cart.getPromotion()).divide(BigDecimal.valueOf(100))));
+            int priceP = priceProduct.intValue();
+            holder.tvPrice.setText("đ"+ String.valueOf(priceP));
+
+            holder.tvPromotion.setText("đ"+String.valueOf(price.intValue()));
+        }
+        else {
+            holder.tvPrice.setText("đ"+ BigDecimal.valueOf(cart.getPrice()).intValue());
+            holder.tvPromotion.setText("");
+        }
         holder.tvQuantity.setText(String.valueOf(cart.getQuantity()));
 //        BigDecimal total = cart.getQuantity() * cart.getPrice();
 //        holder.tvToTalPrice.setText(String.valueOf("$ "+total));

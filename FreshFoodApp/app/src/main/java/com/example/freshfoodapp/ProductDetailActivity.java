@@ -19,6 +19,7 @@ import com.example.freshfoodapp.Entity.CartEntity;
 import com.example.freshfoodapp.Models.Product;
 import com.example.freshfoodapp.Models.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,7 +29,7 @@ import retrofit2.Response;
 public class ProductDetailActivity extends AppCompatActivity {
 
     ConstraintLayout btnAddToCart;
-    TextView proName, proPrice, proDesc, proQuantity;
+    TextView proName, proPrice, proDesc, proQuantity, pricePromtion;
     ImageView proImg, btnCart, btnBack, btnPlus, btnMinus;
     ProductAPIService productAPIService;
 
@@ -77,6 +78,18 @@ public class ProductDetailActivity extends AppCompatActivity {
                 startActivity(new Intent(context, CartActivity.class));
             }
         });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                if(SharedPrefManager.getInstance(getApplicationContext()).getUser().isRole()){
+                    startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+                }
+                else {
+                    startActivity(new Intent(getApplicationContext(), BottomNavigationActivity.class));
+                }
+            }
+        });
     }
 
     void getProductDetail(Long id) {
@@ -88,7 +101,18 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                 proName.setText(String.valueOf(product.getName()));
                 proDesc.setText(String.valueOf(product.getDescription()));
-                proPrice.setText(String.valueOf(product.getPrice()));
+                if(product.getPromotion()!=0){
+                    BigDecimal price = BigDecimal.valueOf(product.getPrice().doubleValue());
+                    BigDecimal priceProduct = price.subtract(price.multiply(BigDecimal.valueOf(product.getPromotion()).divide(BigDecimal.valueOf(100))));
+                    int priceP = priceProduct.intValue();
+                    proPrice.setText("đ"+ String.valueOf(priceP));
+
+                    pricePromtion.setText("đ"+String.valueOf(price.intValue()));
+                }
+                else {
+                    proPrice.setText("đ"+ BigDecimal.valueOf(product.getPrice().doubleValue()).intValue());
+                    pricePromtion.setText("");
+                }
                 Glide.with(context).load(product.getImage()).into(proImg);
 
             }
@@ -144,6 +168,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnBack = (ImageView) findViewById(R.id.iv_productdetail_back);
         btnMinus = (ImageView) findViewById(R.id.btn_productdetail_minus);
         btnPlus = (ImageView) findViewById(R.id.btn_productdetail_plus);
+        pricePromtion = (TextView) findViewById(R.id.tv_productdetail_pricepromotion);
 
     }
 }

@@ -1,8 +1,12 @@
 package com.example.freshfoodapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +25,7 @@ import retrofit2.Response;
 
 public class GetProductActivity extends AppCompatActivity {
     RecyclerView rvProducts;
+    ImageView btnBack;
     List<Product> products = new ArrayList<>();
     ProductAPIService productAPIService = RetrofitClient.getRetrofit().create(ProductAPIService.class);
     ProductSoldCategoryAdapter productAdapter;
@@ -29,6 +34,15 @@ public class GetProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
         rvProducts = findViewById(R.id.rv_products_productall);
+        btnBack = findViewById(R.id.iv_cart_back);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), BottomNavigationActivity.class));
+            }
+        });
+
         getAllProduct();
 
     }

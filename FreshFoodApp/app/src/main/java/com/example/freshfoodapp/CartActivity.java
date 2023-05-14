@@ -98,7 +98,10 @@ public class CartActivity extends AppCompatActivity {
         btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkProduct(carts);
+                if(carts.size()<1)
+                    Toast.makeText(getApplicationContext(), "Không có sản phẩm trong giỏ hàng", Toast.LENGTH_SHORT).show();
+                else
+                    checkProduct(carts);
             }
         });
 
@@ -118,9 +121,9 @@ public class CartActivity extends AppCompatActivity {
                             @Override
                             public void onClick(int pos) {
                                 CartEntity cart = carts.get(pos);
-                                AbstractDatabase.getInstance(getApplicationContext()).cartDAO().deleteProduct(cart.getProductId());
 
                                 carts.remove(viewHolder.getAdapterPosition());
+                                AbstractDatabase.getInstance(getApplicationContext()).cartDAO().deleteProduct(cart.getProductId());
                                 adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
 
 
@@ -210,14 +213,16 @@ public class CartActivity extends AppCompatActivity {
     }
 
     public static void TotalPrice(){
-        BigDecimal total = BigDecimal.valueOf(0);
+        int total = 0;
+        int total_Quantity = 0;
         int quantity = 0;
         for(int i =0;i<carts.size();i++)
         {
-            quantity += carts.get(i).getQuantity();
-            total = total.add(BigDecimal.valueOf(carts.get(i).getPrice()).multiply(BigDecimal.valueOf(quantity)));
+            total_Quantity += carts.get(i).getQuantity();
+            quantity = carts.get(i).getQuantity();
+            total += (BigDecimal.valueOf(carts.get(i).getPrice()).multiply(BigDecimal.valueOf(100-carts.get(i).getPromotion()).divide(BigDecimal.valueOf(100))).multiply(BigDecimal.valueOf(quantity))).intValue();
         }
-        totalQuantity.setText(String.valueOf(quantity));
+        totalQuantity.setText(String.valueOf(total_Quantity));
         itemTotalPrice.setText(String.valueOf("$ " + total));
     }
 
